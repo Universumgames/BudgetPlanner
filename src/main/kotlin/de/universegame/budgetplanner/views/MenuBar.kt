@@ -16,23 +16,5 @@ fun MenuBarView(modifier: Modifier = Modifier) {
         MenuBarButton(onClick = {
             count.value++
         }, text = "${count.value}")
-        MenuBarButton(onClick = {
-            count.value++
-        }, text = "${count.value}")
-        MenuBarButton(onClick = {
-            count.value++
-        }, text = "${count.value}")
-        MenuBarButton(onClick = {
-            count.value++
-        }, text = "${count.value}")
-        MenuBarButton(onClick = {
-            count.value++
-        }, text = "${count.value}")
-        MenuBarButton(onClick = {
-            count.value++
-        }, text = "${count.value}")
-        MenuBarButton(onClick = {
-            count.value++
-        }, text = "${count.value}")
     }
 }

@@ -1,10 +1,7 @@
 package de.universegame.budgetplanner.util.components
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 interface IBalanceEntry {
-    var amount: Number
+    var amount: Double
     var usage: String
     var containerId: Int
 }

@@ -15,7 +15,7 @@ fun ContentView() {
             .fillMaxSize()
     ) {
         Surface(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(5.dp)) {
-            Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(0.5f)) {
+            Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(0.6f)) {
                 BalanceListView()
             }
         }

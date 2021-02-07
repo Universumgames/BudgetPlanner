@@ -1,9 +1,7 @@
 package de.universegame.budgetplanner.util.components
 
-import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
-@Serializable
 enum class Interval{
     DAILY,
     WEEKLY,
@@ -14,9 +12,8 @@ enum class Interval{
     ANNUAL
 }
 
-@Serializable
 data class RegularBalanceEntry(
-    override var amount: Number,
+    override var amount: Double,
     override var usage: String,
     override var containerId: Int = 0,
     var startTime: LocalDate = LocalDate.now(),

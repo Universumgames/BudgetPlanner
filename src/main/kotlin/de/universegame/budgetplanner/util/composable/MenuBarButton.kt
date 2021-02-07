@@ -10,7 +10,7 @@ import androidx.compose.ui.geometry.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-private fun tabShape(rad: Dp) = GenericShape { size ->
+private fun tabShape(rad: Dp) = GenericShape { size, direction ->
     moveTo(-1f, 0f)
     /*lineTo(size.width, 0f)
     lineTo(size.width, size.height - rad.value)

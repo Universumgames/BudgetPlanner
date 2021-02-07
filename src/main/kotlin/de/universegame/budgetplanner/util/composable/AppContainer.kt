@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun AppContainer(modifier: Modifier = Modifier, colors: Colors = lightColors(), children: @Composable () -> Unit){
+fun AppContainer(modifier: Modifier = Modifier, colors: Colors = lightColors(), children: @Composable () -> Unit) =
     MaterialTheme(
         colors = colors
     ) {
@@ -24,4 +24,3 @@ fun AppContainer(modifier: Modifier = Modifier, colors: Colors = lightColors(), 
             }
         }
     }
-}

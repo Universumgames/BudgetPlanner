@@ -3,9 +3,6 @@ package de.universegame.budgetplanner
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.skija.Image
@@ -20,6 +17,6 @@ suspend fun imageFromUrl(url: String): ImageBitmap = withContext(Dispatchers.IO)
     Image.makeFromEncoded(bytes).asImageBitmap()
 }
 
-@Composable
+/*@Composable
 fun Font(name: String, res: String, weight: FontWeight, style: FontStyle): Font =
-    androidx.compose.ui.text.platform.Font(name, "font/$res.ttf", weight=weight, style=style)
+    androidx.compose.ui.text.platform.Font(name, "font/$res.ttf", weight=weight, style=style)*/

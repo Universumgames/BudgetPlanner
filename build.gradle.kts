@@ -3,23 +3,26 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.20"
-    id("org.jetbrains.compose") version "0.2.0-build132"
+    kotlin("jvm") version "1.4.30"
+    id("org.jetbrains.compose") version "0.3.0-build150"
+    kotlin("plugin.serialization") version "1.4.30"
 }
 
 group = "de.universegame"
 version = "1.0"
 
 repositories {
+    google()
     jcenter()
     mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+
 }
 
 tasks.withType<KotlinCompile>() {
