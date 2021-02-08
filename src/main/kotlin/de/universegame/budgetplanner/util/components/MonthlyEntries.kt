@@ -1,6 +1,7 @@
 package de.universegame.budgetplanner.util.components
 
 import java.time.LocalDate
+import java.time.Year
 import java.time.YearMonth
 
 data class MonthlyEntries(
@@ -41,3 +42,15 @@ data class MonthlyEntries(
         return total
     }
 }
+
+fun currentMonth(container: BalanceContainer): MonthlyEntries {
+    return if(container.entries.containsKey(Year.now())){
+        container.entries[Year.now()]!!.months[YearMonth.now().monthValue-1]
+    }else {
+        val newYear = YearlyEntries(Year.now())
+        container.entries[Year.now()] = newYear
+        newYear.months[YearMonth.now().monthValue-1]
+    }
+}
+
+

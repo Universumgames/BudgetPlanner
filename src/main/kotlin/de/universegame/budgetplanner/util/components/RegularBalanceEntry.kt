@@ -2,14 +2,14 @@ package de.universegame.budgetplanner.util.components
 
 import java.time.LocalDate
 
-enum class Interval{
-    DAILY,
-    WEEKLY,
-    TWICE_MONTHLY,
-    MONTHLY,
-    QUARTERLY,
-    BIANNUAL,
-    ANNUAL
+enum class Interval(val id: Int, val prettyName: String){
+    DAILY(0, "Daily"),
+    WEEKLY(1, "Weekly"),
+    TWICE_MONTHLY(2, "Twice a month"),
+    MONTHLY(3, "Monthly"),
+    QUARTERLY(4, "Quarterly"),
+    BIANNUAL(5, "Biannual"),
+    ANNUAL(6, "Yearly")
 }
 
 data class RegularBalanceEntry(

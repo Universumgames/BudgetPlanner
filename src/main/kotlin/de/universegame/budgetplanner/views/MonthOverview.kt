@@ -1,74 +1,46 @@
 package de.universegame.budgetplanner.views
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import de.universegame.budgetplanner.util.BalanceListColors
+import de.universegame.budgetplanner.util.components.BalanceContainer
+import de.universegame.budgetplanner.util.components.MonthlyEntries
+import de.universegame.budgetplanner.util.composable.BalanceEntryRow
+import de.universegame.budgetplanner.util.toCurrencyString
+import de.universegame.budgetplanner.util.toSimpleFullName
 
 @Composable
-fun MonthOverviewView(){
-    val count = remember { mutableStateOf(0) }
-    Row (modifier = Modifier.fillMaxSize()){
-        Column(Modifier.fillMaxHeight().width(100.dp), Arrangement.spacedBy(5.dp)) {
-            Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    count.value++
-                }) {
-                Text(if (count.value == 0) "Hello World" else "Clicked ${count.value}!")
-            }
-            Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    count.value = 0
-                }) {
-                Text("Reset")
-            }
+fun MonthOverviewView(
+    month: MonthlyEntries,
+    colorScheme: BalanceListColors = BalanceListColors(),
+    container: BalanceContainer
+) {
+    Column(modifier = Modifier.fillMaxSize(), Arrangement.Center) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Text(month.month.toSimpleFullName(), fontSize = 40.sp, color = colorScheme.fontColor)
         }
-        Column(Modifier.fillMaxHeight().width(100.dp), Arrangement.spacedBy(5.dp)) {
-            Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    count.value++
-                }) {
-                Text(if (count.value == 0) "Hello Worlds" else "Clicked ${count.value}!")
-            }
-            Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    count.value = 0
-                }) {
-                Text("Reset1")
-            }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            val total = container.totalTil(month.month)
+            val change = month.total(container.regularBalanceEntries)
+            Text(
+                change.toCurrencyString("€"),
+                fontSize = 30.sp,
+                color = if (total < 0) colorScheme.negativeEntryFontColor else colorScheme.positiveEntryFontColor
+            )
+            Spacer(Modifier.width(10.dp))
+            Text(
+                total.toCurrencyString("€", false),
+                fontSize = 30.sp,
+                color = if (total < 0) colorScheme.negativeEntryFontColor else colorScheme.positiveEntryFontColor
+            )
         }
-        Column(Modifier.fillMaxHeight().width(100.dp), Arrangement.spacedBy(5.dp)) {
-            Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    count.value++
-                }) {
-                Text(if (count.value == 0) "Hello Worlds" else "Clicked ${count.value}!")
-            }
-            Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    count.value = 0
-                }) {
-                Text("Reset1")
-            }
+        for (entry in month.entries) {
+            BalanceEntryRow(entry = entry, currency = "€", onClick = {}, colorScheme = colorScheme)
         }
-        Column(Modifier.fillMaxHeight().width(100.dp), Arrangement.spacedBy(5.dp)) {
-            Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    count.value++
-                }) {
-                Text(if (count.value == 0) "Hello Worlds" else "Clicked ${count.value}!")
-            }
-            Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    count.value = 0
-                }) {
-                Text("Reset1")
-            }
-        }
+
     }
 }

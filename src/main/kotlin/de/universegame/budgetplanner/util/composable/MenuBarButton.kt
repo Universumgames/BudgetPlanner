@@ -1,16 +1,14 @@
 package de.universegame.budgetplanner.util.composable
 
-import androidx.compose.foundation.shape.GenericShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.*
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
+import de.universegame.budgetplanner.util.Settings
 
-private fun tabShape(rad: Dp) = GenericShape { size, direction ->
+/*private fun tabShape(rad: Dp) = GenericShape { size, direction ->
     moveTo(-1f, 0f)
     /*lineTo(size.width, 0f)
     lineTo(size.width, size.height - rad.value)
@@ -26,11 +24,24 @@ private fun tabShape(rad: Dp) = GenericShape { size, direction ->
             bottomRight = CornerRadius(rad.value),
         )
     )
-}
+}*/
 
 @Composable
-fun MenuBarButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = modifier, shape = RoundedCornerShape(5.dp)) {
-        Text(text)
-    }
+fun MenuBarButton(
+    settings: Settings,
+    text: String,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 10.sp,
+    onClick: () -> Unit
+) {
+    DefaultButton(
+        text = text,
+        fontSize = fontSize,
+        modifier = modifier,
+        buttonBgColor = settings.colorScheme.defaultButtonBgColor,
+        fontColor = settings.colorScheme.fontColor,
+        style = TextStyle(fontWeight = FontWeight.ExtraBold),
+        shape = settings.defaultShape,
+        onClick = onClick
+    )
 }

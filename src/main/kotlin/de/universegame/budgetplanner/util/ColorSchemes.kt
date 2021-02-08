@@ -14,3 +14,11 @@ data class BalanceListColors(
     val monthOverviewBgColor: Color = Color(0xff202020),
     val oneTimeEntryBgColor: Color = Color(0xff1d1d1d),
 ) : SimpleColorScheme
+
+data class ColorScheme(
+    val balanceListColors: BalanceListColors = BalanceListColors(),
+    val appBackground: Color = Color(0xff1d1d1d),
+    override val fontColor: Color = Color.White,
+    val defaultButtonBgColor: Color = Color(0xff5d5d5d),
+    val widgetBgColor: Color = Color(0xff202020)
+) : SimpleColorScheme

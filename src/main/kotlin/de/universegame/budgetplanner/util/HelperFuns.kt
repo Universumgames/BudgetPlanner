@@ -1,6 +1,8 @@
 package de.universegame.budgetplanner.util
 
 import java.time.YearMonth
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 fun YearMonth.toSimpleFullName(): String {
     return when (this.monthValue) {
@@ -16,6 +18,14 @@ fun YearMonth.toSimpleFullName(): String {
         10 -> "October " + this.year
         11 -> "November " + this.year
         12 -> "December " + this.year
-        else -> ""
+        else -> "Error"
     }
+}
+
+fun Double.round(decimal: Int): Double{
+    return (this * 10.0.pow(decimal)).roundToInt().toDouble() / 10.0.pow(decimal)
+}
+
+fun Double.toCurrencyString(currency: String, conditionalPlus: Boolean = true): String{
+    return (if(this >= 0 && conditionalPlus) "+" else "") + this.round(2).toString() + currency
 }

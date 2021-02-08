@@ -1,30 +1,22 @@
-
 import androidx.compose.desktop.Window
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.IntSize
 import de.universegame.budgetplanner.AppView
-import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
-import de.universegame.budgetplanner.util.components.YearlyEntries
-import de.universegame.budgetplanner.util.components.globalBalanceContainer
+import de.universegame.budgetplanner.util.Settings
+import de.universegame.budgetplanner.util.components.loadBalanceContainer
 import java.awt.image.BufferedImage
-import java.time.Year
 import javax.imageio.ImageIO
-import kotlin.random.Random
-
 
 fun main() = Window(
     title = "Budget Planner",
-    icon = loadImageResource("ic_launcher.png")
+    icon = loadImageResource("ic_launcher.png"),
+    size = IntSize(1000, 600)
 )
 {
-    for( i in 0..100){
-        val year = Year.of(Random.nextInt(1990, 2025))
-        var t = YearlyEntries(year)
-        if(globalBalanceContainer.entries.containsKey(year))
-            t = globalBalanceContainer.entries[year]!!
-        t.months[Random.nextInt(0, 11)].entries.add(OneTimeBalanceEntry(Random.nextDouble(-500.0, 500.0), "test", 0))
-        globalBalanceContainer.entries[year] = t
-    }
-
-    AppView()
+    val balanceContainer = remember { mutableStateOf(loadBalanceContainer("data.json")) }
+    val settings: Settings = Settings()
+    AppView(balanceContainer, settings)
 }
 
 private fun loadImageResource(path: String): BufferedImage {
