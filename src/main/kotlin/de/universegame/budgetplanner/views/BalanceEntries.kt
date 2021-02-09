@@ -12,18 +12,23 @@ import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.components.*
 import de.universegame.budgetplanner.util.toCurrencyString
 import de.universegame.budgetplanner.util.toSimpleFullName
+import java.time.LocalDate
 
 
 @Composable
 fun BalanceEntryRow(
     modifier: Modifier = Modifier,
     entry: IBalanceEntry,
+    date: LocalDate,
     currency: String,
     onClick: (IBalanceEntry) -> Unit,
     colorScheme: BalanceListColors = BalanceListColors()
 ) {
-    Surface(color = colorScheme.oneTimeEntryBgColor) {
+    Surface(color = if (entry.type == EntryType.ONE_TIME) colorScheme.oneTimeEntryBgColor else colorScheme.regularEntryBgColor) {
         Row(modifier = modifier.fillMaxWidth().clickable { onClick(entry) }, Arrangement.SpaceEvenly) {
+            Column {
+                Text(date.toString(), color = colorScheme.fontColor)
+            }
             Column {
                 Text(
                     entry.amount.toCurrencyString(currency),
@@ -51,7 +56,11 @@ fun YearOverviewRow(
     container: BalanceContainer,
     onClick: () -> Unit
 ) {
-    Surface(color = colorScheme.yearOverviewBgColor, modifier = modifier.padding(1.dp), shape = RoundedCornerShape(5.dp)) {
+    Surface(
+        color = colorScheme.yearOverviewBgColor,
+        modifier = modifier.padding(1.dp),
+        shape = RoundedCornerShape(5.dp)
+    ) {
         Row(modifier.fillMaxWidth().clickable { onClick() }, Arrangement.SpaceEvenly) {
             Text(entry.year.value.toString(), color = colorScheme.fontColor)
             val totalChange = entry.total(timedList)

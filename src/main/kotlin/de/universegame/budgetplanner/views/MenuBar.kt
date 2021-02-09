@@ -10,9 +10,6 @@ import de.universegame.budgetplanner.util.SubWindowType
 import de.universegame.budgetplanner.util.composable.MenuBar
 import de.universegame.budgetplanner.util.composable.MenuBarButton
 
-
-//ToDo split add-one-time-entry and regular entry into seperate menus
-
 @Composable
 fun MenuBarView(modifier: Modifier = Modifier, settings: Settings, onMenuBarCLick: (SubWindowType) -> Unit) {
     MenuBar(modifier = modifier.padding(0.dp)) {

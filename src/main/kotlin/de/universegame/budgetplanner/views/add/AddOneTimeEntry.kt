@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
 import de.universegame.budgetplanner.util.composable.DefaultButton
+import de.universegame.budgetplanner.util.composable.ScrollColumn
 import de.universegame.budgetplanner.util.composable.SimpleDateInput
 import java.time.LocalDate
 
@@ -24,7 +25,7 @@ fun AddOneTimeEntryView(
     colorScheme: BalanceListColors = BalanceListColors(),
     onSubmitClick: (OneTimeBalanceEntry) -> Unit
 ) {
-    Column(Modifier.fillMaxSize().padding(5.dp)) {
+    ScrollColumn(Modifier.fillMaxSize().padding(5.dp)) {
         val entry = remember { mutableStateOf(OneTimeBalanceEntry(0.0, "Not defined", 0)) }
         val amountInput = remember { mutableStateOf("0.0") }
         val error = remember { mutableStateOf("") }

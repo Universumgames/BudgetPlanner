@@ -19,4 +19,7 @@ data class RegularBalanceEntry(
     var startTime: LocalDate = LocalDate.now(),
     var endTime: LocalDate = LocalDate.now().plusYears(1),
     var interval: Interval = Interval.MONTHLY
-):IBalanceEntry
+):IBalanceEntry{
+    override val type: EntryType
+        get() = EntryType.REGULAR
+}

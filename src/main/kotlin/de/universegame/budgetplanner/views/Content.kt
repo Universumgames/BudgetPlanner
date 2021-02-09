@@ -17,9 +17,6 @@ import de.universegame.budgetplanner.util.components.currentMonth
 import de.universegame.budgetplanner.views.add.AddOneTimeEntryView
 import de.universegame.budgetplanner.views.add.AddRegularEntryView
 
-
-//ToDo split add-one-time-entry and regular entry into seperate menus
-
 @Composable
 fun ContentView(
     container: BalanceContainer,
@@ -44,7 +41,7 @@ fun ContentView(
         Spacer(Modifier.size(4.dp))
         Column(modifier = Modifier.fillMaxHeight()) {
             Row(
-                modifier = (if (subWindow == SubWindowType.ADD_ONETIME_ENTRY) Modifier.fillMaxWidth()
+                modifier = (if (subWindow != SubWindowType.NONE) Modifier.fillMaxWidth()
                     .fillMaxHeight(.5f) else Modifier.fillMaxSize())
             ) {
                 Surface(color = settings.colorScheme.widgetBgColor, shape = RoundedCornerShape(5.dp)) {

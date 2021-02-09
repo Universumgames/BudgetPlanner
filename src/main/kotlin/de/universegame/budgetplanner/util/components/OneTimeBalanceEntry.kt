@@ -6,5 +6,9 @@ data class OneTimeBalanceEntry(
     override var amount: Double,
     override var usage: String,
     override var containerId: Int,
-    var date: LocalDate = LocalDate.now()
-):IBalanceEntry
+    var date: LocalDate = LocalDate.now(),
+    val displayTypeOverride: EntryType = EntryType.ONE_TIME
+):IBalanceEntry{
+    override val type: EntryType
+        get() = displayTypeOverride
+}

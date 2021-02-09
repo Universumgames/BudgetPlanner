@@ -11,7 +11,8 @@ import javax.imageio.ImageIO
 fun main() = Window(
     title = "Budget Planner",
     icon = loadImageResource("ic_launcher.png"),
-    size = IntSize(1000, 600)
+    size = IntSize(1300, 600),
+    centered = true
 )
 {
     val balanceContainer = remember { mutableStateOf(loadBalanceContainer("data.json")) }

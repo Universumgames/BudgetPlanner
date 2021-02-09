@@ -14,10 +14,7 @@ import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.components.Interval
 import de.universegame.budgetplanner.util.components.RegularBalanceEntry
-import de.universegame.budgetplanner.util.composable.CustomRadioButton
-import de.universegame.budgetplanner.util.composable.DefaultButton
-import de.universegame.budgetplanner.util.composable.SimpleDateInput
-import de.universegame.budgetplanner.util.composable.SimpleFlowRow
+import de.universegame.budgetplanner.util.composable.*
 import java.time.LocalDate
 
 //ToDo try to make textfields smaller
@@ -27,7 +24,7 @@ fun AddRegularEntryView(
     colorScheme: BalanceListColors = BalanceListColors(),
     onSubmitClick: (RegularBalanceEntry) -> Unit
 ) {
-    Column(Modifier.fillMaxSize().padding(5.dp)) {
+    ScrollColumn(Modifier.fillMaxSize().padding(5.dp)) {
         val entry = remember { mutableStateOf(RegularBalanceEntry(0.0, "Not defined", 0)) }
         val amountInput = remember { mutableStateOf("0.0") }
         val error = remember { mutableStateOf("") }
@@ -67,7 +64,7 @@ fun AddRegularEntryView(
 
         SimpleFlowRow(modifier = Modifier.fillMaxWidth(), horizontalGap = 2.dp, verticalGap = 5.dp) {
             for (i in Interval.values()) {
-                CustomRadioButton(selectedInterval, i.id, i.prettyName)
+                CustomRadioButton(selectedInterval, i.id, i.prettyName, colorScheme.fontColor)
                 Spacer(Modifier.width(2.dp))
             }
         }
@@ -103,7 +100,7 @@ fun AddRegularEntryView(
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             if (!date2Set.value)
                 SimpleDateInput { date2Input.value = it; date2Set.value = true }
-            else Text(date1Input.value.toString(), color = colorScheme.fontColor)
+            else Text(date2Input.value.toString(), color = colorScheme.fontColor)
         }
 
         Row {

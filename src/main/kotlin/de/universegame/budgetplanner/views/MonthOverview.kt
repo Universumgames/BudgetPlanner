@@ -30,7 +30,7 @@ fun MonthOverviewView(
             Text(
                 change.toCurrencyString("€"),
                 fontSize = 30.sp,
-                color = if (total < 0) colorScheme.negativeEntryFontColor else colorScheme.positiveEntryFontColor
+                color = if (change < 0) colorScheme.negativeEntryFontColor else colorScheme.positiveEntryFontColor
             )
             Spacer(Modifier.width(10.dp))
             Text(
@@ -39,8 +39,8 @@ fun MonthOverviewView(
                 color = if (total < 0) colorScheme.negativeEntryFontColor else colorScheme.positiveEntryFontColor
             )
         }
-        for (entry in month.entries) {
-            BalanceEntryRow(entry = entry, currency = "€", onClick = {}, colorScheme = colorScheme)
+        for (entry in month.simplifiedList(container)) {
+            BalanceEntryRow(entry = entry, currency = "€", onClick = {}, colorScheme = colorScheme, date = entry.date)
         }
 
     }

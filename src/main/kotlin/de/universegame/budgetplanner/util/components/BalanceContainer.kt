@@ -19,6 +19,7 @@ class BalanceContainer {
         return entries.toSortedMap()
     }
 
+
     fun totalTil(year: Year): Double {
         var total = 0.0
         val sorted = sortedEntries()
@@ -71,20 +72,42 @@ class BalanceContainer {
         )
     }
 
-    fun addRegularEntry(entry: RegularBalanceEntry){
+    fun addRegularEntry(entry: RegularBalanceEntry) {
         regularBalanceEntries.add(entry)
     }
 }
 
 fun loadBalanceContainer(filename: String): BalanceContainer {
     val container = BalanceContainer()
-    for( i in 0..100){
+    for (i in 0..100) {
         val year = Year.of(Random.nextInt(2021, 2022))
         var t = YearlyEntries(year)
-        if(container.entries.containsKey(year))
+        if (container.entries.containsKey(year))
             t = container.entries[year]!!
-        t.months[Random.nextInt(0, 11)].entries.add(OneTimeBalanceEntry(Random.nextDouble(-500.0, 500.0), "test", 0))
+        val month = Random.nextInt(0, 11)
+        var day = Random.nextInt(1, 31)
+        while(!year.atMonth(month+1).isValidDay(day))
+            day = Random.nextInt(1, 31)
+        t.months[month].entries.add(
+            OneTimeBalanceEntry(
+                Random.nextDouble(-500.0, 500.0),
+                "test",
+                0,
+                date = LocalDate.of(year.value, month+1, day)
+            )
+        )
         container.entries[year] = t
+    }
+    for (i in 0..10) {
+        val interval = Interval.values()[Random.nextInt(0, Interval.values().size-1)]
+        container.regularBalanceEntries.add(
+            RegularBalanceEntry(
+                Random.nextDouble(-500.0, 500.0), "regular${interval.prettyName}",
+                0,
+                LocalDate.now().plusDays(Random.nextLong(-31, 31)),
+                interval = interval
+            )
+        )
     }
     //ToDo real loading
     return container

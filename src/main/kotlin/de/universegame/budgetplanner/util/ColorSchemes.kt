@@ -13,6 +13,7 @@ data class BalanceListColors(
     val yearOverviewBgColor: Color = Color(0xff2d2d2d),
     val monthOverviewBgColor: Color = Color(0xff202020),
     val oneTimeEntryBgColor: Color = Color(0xff1d1d1d),
+    val regularEntryBgColor: Color = Color(0xff101010),
 ) : SimpleColorScheme
 
 data class ColorScheme(
