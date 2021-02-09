@@ -16,36 +16,61 @@ import java.time.LocalDate
 @Composable
 fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.White, onSubmit: (LocalDate) -> Unit) {
     SimpleFlowRow(modifier.fillMaxWidth().padding(5.dp), horizontalGap = 2.dp, verticalGap = 5.dp) {
-        val day = remember { mutableStateOf("1") }
-        val month = remember { mutableStateOf("1") }
-        val year = remember { mutableStateOf(LocalDate.now().year.toString()) }
+        val localDate = LocalDate.now()
+        val day = remember { mutableStateOf(localDate.dayOfMonth.toString()) }
+        val month = remember { mutableStateOf(localDate.monthValue.toString()) }
+        val year = remember { mutableStateOf(localDate.year.toString()) }
         Text("Day", color = fontColor)
         Spacer(Modifier.size(3.dp))
-        TextField(day.value, onValueChange = {
-            day.value = it.replace(" ", "")
-        }, singleLine = true, shape = RoundedCornerShape(5.dp), modifier = Modifier.height(50.dp).width(80.dp), activeColor = Color.White, textStyle = TextStyle(fontColor))
+        TextField(
+            day.value,
+            onValueChange = {
+                day.value = it.replace(" ", "")
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(5.dp),
+            modifier = Modifier.height(50.dp).width(80.dp),
+            activeColor = Color.White,
+            textStyle = TextStyle(fontColor)
+        )
         Spacer(Modifier.size(3.dp))
 
         Text("Month", color = fontColor)
         Spacer(Modifier.size(3.dp))
-        TextField(month.value, onValueChange = {
-            month.value = it.replace(" ", "")
-        }, singleLine = true, shape = RoundedCornerShape(5.dp), modifier = Modifier.height(50.dp).width(80.dp), activeColor = Color.White, textStyle = TextStyle(fontColor))
+        TextField(
+            month.value,
+            onValueChange = {
+                month.value = it.replace(" ", "")
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(5.dp),
+            modifier = Modifier.height(50.dp).width(80.dp),
+            activeColor = Color.White,
+            textStyle = TextStyle(fontColor)
+        )
         Spacer(Modifier.size(3.dp))
 
         Text("Year", color = fontColor)
         Spacer(Modifier.size(3.dp))
-        TextField(year.value, onValueChange = {
-            year.value = it.replace(" ", "")
-        }, singleLine = true, shape = RoundedCornerShape(5.dp), modifier = Modifier.height(50.dp).width(80.dp), activeColor = Color.White, textStyle = TextStyle(fontColor))
+        TextField(
+            year.value,
+            onValueChange = {
+                year.value = it.replace(" ", "")
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(5.dp),
+            modifier = Modifier.height(50.dp).width(80.dp),
+            activeColor = Color.White,
+            textStyle = TextStyle(fontColor)
+        )
         DefaultButton(onClick = {
             try {
                 val date = LocalDate.of(year.value.toInt(), month.value.toInt(), day.value.toInt())
                 onSubmit(date)
-            }catch(e:Exception){
+            } catch (e: Exception) {
                 println(e.stackTraceToString())
             }
-        }, text ="Set Date")
+        }, text = "Set Date")
 
     }
 }

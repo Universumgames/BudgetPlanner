@@ -10,9 +10,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import de.universegame.budgetplanner.util.AddEntryType
 import de.universegame.budgetplanner.util.Settings
 import de.universegame.budgetplanner.util.SubWindowType
 import de.universegame.budgetplanner.util.components.BalanceContainer
+import de.universegame.budgetplanner.util.components.IBalanceEntry
+import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
 import de.universegame.budgetplanner.util.composable.AppContainer
 import de.universegame.budgetplanner.views.ContentView
 import de.universegame.budgetplanner.views.MenuBarView
@@ -30,8 +33,16 @@ fun AppView(mutableContainer: MutableState<BalanceContainer>, settings: Settings
             .padding(6.dp),
     ) {
         val subWindow = remember { mutableStateOf(SubWindowType.NONE) }
-        ContentView(subWindow = subWindow.value, container = mutableContainer.value, settings = settings) {
+        ContentView(
+            subWindow = subWindow.value,
+            container = mutableContainer.value,
+            settings = settings
+        ) { entry: IBalanceEntry, addEntryType: AddEntryType ->
             subWindow.value = SubWindowType.NONE
+            if (addEntryType == AddEntryType.OneTime) {
+                mutableContainer.value.addOneTimeEntry(entry as OneTimeBalanceEntry)
+                println("added " + entry.amount + " to " + entry.date)
+            }
         }
         MenuBarView(settings = settings) {
             subWindow.value = it

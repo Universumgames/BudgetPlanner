@@ -20,8 +20,7 @@ fun BalanceListView(balanceContainer: BalanceContainer, onMonthSelected: (Monthl
         for (entry in balanceContainer.sortedEntries()) {
             val year = entry.key
             val yearEntry = entry.value
-            val dropdown = remember { mutableStateOf(false) }
-            if (year.value == LocalDate.now().year) dropdown.value = true
+            val dropdown = remember { mutableStateOf(year.value == LocalDate.now().year) }
             YearOverviewRow(
                 modifier = Modifier.padding(top = 10.dp, bottom = 10.dp),
                 entry = yearEntry,

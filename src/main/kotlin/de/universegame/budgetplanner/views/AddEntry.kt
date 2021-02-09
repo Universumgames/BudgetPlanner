@@ -24,6 +24,12 @@ import de.universegame.budgetplanner.util.composable.SimpleFlowRow
 import java.time.LocalDate
 
 
+//ToDo split adding regular entry and onetime entry
+
+//ToDo add usage TextField
+
+//ToDo try to make textfields smaller
+
 @Composable
 fun AddEntryView(
     colorScheme: BalanceListColors = BalanceListColors(),
@@ -53,8 +59,7 @@ fun AddEntryView(
                     error.value = "Not a number"
                     println(e.stackTraceToString())
                 }
-                println(amountInput.value)
-                //onSubmitClick(entry.value, entryType.value)
+                onSubmitClick(entry.value, entryType.value)
             }, text = "Submit")
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
@@ -85,21 +90,20 @@ fun AddEntryView(
             Text("Start date", color = colorScheme.fontColor)
             if (!date1Set.value)
                 SimpleDateInput { date1Input.value = it; date1Set.value = true }
-            else Text(date1Input.value.toString())
+            else Text(date1Input.value.toString(), color = colorScheme.fontColor)
             Spacer(Modifier.size(3.dp))
             Text("End date", color = colorScheme.fontColor)
             if (!date2Set.value)
                 SimpleDateInput { date2Input.value = it; date2Set.value = true }
-            else Text(date1Input.value.toString())
+            else Text(date1Input.value.toString(), color = colorScheme.fontColor)
         } else {
             Text("Transactiondate", color = colorScheme.fontColor)
             if (!date1Set.value)
                 SimpleDateInput { date1Input.value = it; date1Set.value = true }
-            else Text(date1Input.value.toString())
+            else Text(date1Input.value.toString(), color = colorScheme.fontColor)
         }
         Row {
             Text(error.value, color = Color.Red)
         }
     }
-
 }

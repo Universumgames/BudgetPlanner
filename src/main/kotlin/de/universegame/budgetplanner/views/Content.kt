@@ -15,8 +15,17 @@ import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.IBalanceEntry
 import de.universegame.budgetplanner.util.components.currentMonth
 
+
+//ToDo split add-one-time-entry and regular entry into seperate menus
+
 @Composable
-fun ContentView(container: BalanceContainer, settings: Settings, modifier: Modifier = Modifier, subWindow: SubWindowType = SubWindowType.NONE, onAddSubmit: () -> Unit) {
+fun ContentView(
+    container: BalanceContainer,
+    settings: Settings,
+    modifier: Modifier = Modifier,
+    subWindow: SubWindowType = SubWindowType.NONE,
+    onAddSubmit: (entry: IBalanceEntry, addEntryType: AddEntryType) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -31,7 +40,10 @@ fun ContentView(container: BalanceContainer, settings: Settings, modifier: Modif
         }
         Spacer(Modifier.size(4.dp))
         Column(modifier = Modifier.fillMaxHeight()) {
-            Row(modifier = (if (subWindow == SubWindowType.ADD_ENTRY) Modifier.fillMaxWidth().fillMaxHeight(.5f) else Modifier.fillMaxSize())) {
+            Row(
+                modifier = (if (subWindow == SubWindowType.ADD_ENTRY) Modifier.fillMaxWidth()
+                    .fillMaxHeight(.5f) else Modifier.fillMaxSize())
+            ) {
                 Surface(color = settings.colorScheme.widgetBgColor, shape = RoundedCornerShape(5.dp)) {
                     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
                         MonthOverviewView(selectedMonth.value, container = container)
@@ -43,8 +55,8 @@ fun ContentView(container: BalanceContainer, settings: Settings, modifier: Modif
                 Row {
                     Surface(color = settings.colorScheme.widgetBgColor, shape = RoundedCornerShape(5.dp)) {
                         Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
-                            AddEntryView{ entry: IBalanceEntry, addEntryType: AddEntryType ->
-
+                            AddEntryView { entry: IBalanceEntry, addEntryType: AddEntryType ->
+                                onAddSubmit(entry, addEntryType)
                             }
                         }
                     }

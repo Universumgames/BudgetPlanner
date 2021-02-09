@@ -58,6 +58,18 @@ class BalanceContainer {
             )
         )
     }
+
+    fun addOneTimeEntry(entry: OneTimeBalanceEntry) {
+        val year = Year.of(entry.date.year)
+        var yearEntries: YearlyEntries = YearlyEntries(year)
+        if (entries.containsKey(year)) {
+            yearEntries = entries[year]!!
+        } else
+            entries[year] = yearEntries
+        yearEntries.months[entry.date.monthValue - 1].entries.add(
+            entry
+        )
+    }
 }
 
 fun loadBalanceContainer(filename: String): BalanceContainer {
