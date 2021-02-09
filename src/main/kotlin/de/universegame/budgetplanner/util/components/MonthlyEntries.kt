@@ -21,12 +21,9 @@ data class MonthlyEntries(
         val clone = copy()
         val clonedEntries = clone.entries.toMutableList()
         for (regular in container.regularBalanceEntries) {
-            val now = month.atDay(LocalDate.now().dayOfMonth)
-            val yearsDiff = regular.startTime.year - now.year
-            val monthsDiff = regular.startTime.monthValue - now.monthValue
-            val dayDiff = regular.startTime.dayOfMonth - now.dayOfMonth
-            val weeksDiff: Int = (dayDiff - (dayDiff % 7)) / 7
-            if (regular.startTime <= now && regular.endTime >= now) {
+            val yearsDiff = regular.startTime.year - month.year
+            val monthsDiff = regular.startTime.monthValue - month.monthValue
+            if (YearMonth.from(regular.startTime) <= month && YearMonth.from(regular.endTime) >= month) {
                 when (regular.interval) {
                     Interval.DAILY -> {
                         for (i in 1..31) {
@@ -44,10 +41,42 @@ data class MonthlyEntries(
                         }
                     }
                     Interval.WEEKLY -> {
-                        //ToDo
+                        for (i in 1..31) {
+                            if (month.isValidDay(i)) {
+                                val now = month.atDay(i)
+                                val dayDiff = regular.startTime.dayOfMonth - i
+                                if (dayDiff % 7 == 0) {
+                                    clonedEntries.add(
+                                        OneTimeBalanceEntry(
+                                            regular.amount,
+                                            regular.usage,
+                                            regular.containerId,
+                                            LocalDate.of(month.year, month.monthValue, now.dayOfMonth),
+                                            EntryType.REGULAR
+                                        )
+                                    )
+                                }
+                            }
+                        }
                     }
                     Interval.TWICE_MONTHLY -> {
-                        //ToDo
+                        for (i in 1..31) {
+                            if (month.isValidDay(i)) {
+                                val now = month.atDay(i)
+                                val dayDiff = regular.startTime.dayOfMonth - i
+                                if (dayDiff % 7 == 0 && dayDiff % 14 == 0) {
+                                    clonedEntries.add(
+                                        OneTimeBalanceEntry(
+                                            regular.amount,
+                                            regular.usage,
+                                            regular.containerId,
+                                            LocalDate.of(month.year, month.monthValue, now.dayOfMonth),
+                                            EntryType.REGULAR
+                                        )
+                                    )
+                                }
+                            }
+                        }
                     }
                     Interval.MONTHLY -> {
                         clonedEntries.add(

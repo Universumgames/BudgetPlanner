@@ -99,7 +99,7 @@ fun loadBalanceContainer(filename: String): BalanceContainer {
         container.entries[year] = t
     }
     for (i in 0..10) {
-        val interval = Interval.values()[Random.nextInt(0, Interval.values().size-1)]
+        val interval = Interval.values()[Random.nextInt(1, Interval.values().size-1)]
         container.regularBalanceEntries.add(
             RegularBalanceEntry(
                 Random.nextDouble(-500.0, 500.0), "regular${interval.prettyName}",
