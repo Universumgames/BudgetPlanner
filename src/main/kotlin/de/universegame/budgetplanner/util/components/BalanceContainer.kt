@@ -79,7 +79,7 @@ class BalanceContainer {
 fun loadBalanceContainer(filename: String): BalanceContainer {
     val container = BalanceContainer()
     for( i in 0..100){
-        val year = Year.of(Random.nextInt(1990, 2025))
+        val year = Year.of(Random.nextInt(2021, 2022))
         var t = YearlyEntries(year)
         if(container.entries.containsKey(year))
             t = container.entries[year]!!

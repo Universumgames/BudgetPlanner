@@ -10,6 +10,7 @@ import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.MonthlyEntries
 import de.universegame.budgetplanner.util.composable.BalanceEntryRow
+import de.universegame.budgetplanner.util.composable.ScrollColumn
 import de.universegame.budgetplanner.util.toCurrencyString
 import de.universegame.budgetplanner.util.toSimpleFullName
 
@@ -19,7 +20,7 @@ fun MonthOverviewView(
     colorScheme: BalanceListColors = BalanceListColors(),
     container: BalanceContainer
 ) {
-    Column(modifier = Modifier.fillMaxSize(), Arrangement.Center) {
+    ScrollColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Text(month.month.toSimpleFullName(), fontSize = 40.sp, color = colorScheme.fontColor)
         }

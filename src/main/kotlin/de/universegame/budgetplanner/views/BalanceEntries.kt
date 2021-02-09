@@ -95,7 +95,7 @@ fun MonthOverviewRow(
             val total = container.totalTil(entry.month)
             Text(
                 totalChange.toCurrencyString(currency),
-                color = if (total < 0) colorScheme.negativeEntryFontColor else colorScheme.positiveEntryFontColor
+                color = if (totalChange < 0) colorScheme.negativeEntryFontColor else colorScheme.positiveEntryFontColor
             )
             Text(
                 total.toCurrencyString(currency, false),
