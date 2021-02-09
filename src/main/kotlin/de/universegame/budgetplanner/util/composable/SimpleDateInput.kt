@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import java.time.LocalDate
+import java.time.Year
 
 @Composable
 fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.White, onSubmit: (LocalDate) -> Unit) {
@@ -25,7 +26,17 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
         TextField(
             day.value,
             onValueChange = {
-                day.value = it.replace(" ", "")
+                val t = it.replace(" ", "")
+                if (t.isNotEmpty()) {
+                    val cut = t.substring(0, if (t.length < 2) t.length else 2)
+                    try {
+                        var i = cut.toIntOrNull() ?: 1
+                        if (i > 31) i = 31
+                        if (i < 1) i = 1
+                        day.value = i.toString()
+                    } catch (e: Exception) {
+                    }
+                } else day.value = t
             },
             singleLine = true,
             shape = RoundedCornerShape(5.dp),
@@ -40,7 +51,17 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
         TextField(
             month.value,
             onValueChange = {
-                month.value = it.replace(" ", "")
+                val t = it.replace(" ", "")
+                if (t.isNotEmpty()) {
+                    val cut = t.substring(0, if (t.length < 2) t.length else 2)
+                    try {
+                        var i = cut.toIntOrNull() ?: 1
+                        if (i > 12) i = 12
+                        if (i < 1) i = 1
+                        month.value = i.toString()
+                    } catch (e: Exception) {
+                    }
+                } else month.value = t
             },
             singleLine = true,
             shape = RoundedCornerShape(5.dp),
@@ -55,7 +76,17 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
         TextField(
             year.value,
             onValueChange = {
-                year.value = it.replace(" ", "")
+                val t = it.replace(" ", "")
+                if (t.isNotEmpty() && t.length > 3) {
+                    val cut = t.substring(0, if (t.length < 4) t.length else 4)
+                    try {
+                        var i = cut.toIntOrNull() ?: Year.now().value
+                        if (i > Year.now().value + 100) i = Year.now().value + 100
+                        if (i < Year.now().value - 100) i = Year.now().value - 100
+                        year.value = i.toString()
+                    } catch (e: Exception) {
+                    }
+                } else year.value = it
             },
             singleLine = true,
             shape = RoundedCornerShape(5.dp),

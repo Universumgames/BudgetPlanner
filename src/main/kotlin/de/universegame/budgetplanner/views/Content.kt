@@ -8,12 +8,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import de.universegame.budgetplanner.util.AddEntryType
 import de.universegame.budgetplanner.util.Settings
 import de.universegame.budgetplanner.util.SubWindowType
 import de.universegame.budgetplanner.util.components.BalanceContainer
-import de.universegame.budgetplanner.util.components.IBalanceEntry
+import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
+import de.universegame.budgetplanner.util.components.RegularBalanceEntry
 import de.universegame.budgetplanner.util.components.currentMonth
+import de.universegame.budgetplanner.views.add.AddOneTimeEntryView
+import de.universegame.budgetplanner.views.add.AddRegularEntryView
 
 
 //ToDo split add-one-time-entry and regular entry into seperate menus
@@ -24,7 +26,8 @@ fun ContentView(
     settings: Settings,
     modifier: Modifier = Modifier,
     subWindow: SubWindowType = SubWindowType.NONE,
-    onAddSubmit: (entry: IBalanceEntry, addEntryType: AddEntryType) -> Unit
+    onAddOneTimeSubmit: (entry: OneTimeBalanceEntry) -> Unit,
+    onAddRegularSubmit: (entry: RegularBalanceEntry) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -41,7 +44,7 @@ fun ContentView(
         Spacer(Modifier.size(4.dp))
         Column(modifier = Modifier.fillMaxHeight()) {
             Row(
-                modifier = (if (subWindow == SubWindowType.ADD_ENTRY) Modifier.fillMaxWidth()
+                modifier = (if (subWindow == SubWindowType.ADD_ONETIME_ENTRY) Modifier.fillMaxWidth()
                     .fillMaxHeight(.5f) else Modifier.fillMaxSize())
             ) {
                 Surface(color = settings.colorScheme.widgetBgColor, shape = RoundedCornerShape(5.dp)) {
@@ -50,17 +53,32 @@ fun ContentView(
                     }
                 }
             }
-            if (subWindow == SubWindowType.ADD_ENTRY) {
+            if (subWindow != SubWindowType.NONE) {
                 Spacer(Modifier.size(4.dp))
                 Row {
-                    Surface(color = settings.colorScheme.widgetBgColor, shape = RoundedCornerShape(5.dp)) {
-                        Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
-                            AddEntryView { entry: IBalanceEntry, addEntryType: AddEntryType ->
-                                onAddSubmit(entry, addEntryType)
+                    Surface(
+                        color = settings.colorScheme.widgetBgColor,
+                        shape = RoundedCornerShape(5.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxHeight().fillMaxWidth()
+                        ) {
+                            when (subWindow) {
+                                SubWindowType.ADD_ONETIME_ENTRY ->
+                                    AddOneTimeEntryView { entry: OneTimeBalanceEntry ->
+                                        onAddOneTimeSubmit(entry)
+                                    }
+                                SubWindowType.ADD_REGULAR_ENTRY ->
+                                    AddRegularEntryView { entry: RegularBalanceEntry ->
+                                        onAddRegularSubmit(entry)
+                                    }
+                                SubWindowType.NONE -> {
+                                }
                             }
                         }
                     }
                 }
+
             }
         }
     }

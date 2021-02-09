@@ -14,10 +14,13 @@ import de.universegame.budgetplanner.util.composable.MenuBarButton
 //ToDo split add-one-time-entry and regular entry into seperate menus
 
 @Composable
-fun MenuBarView(modifier: Modifier = Modifier, settings: Settings, onAddClick: (SubWindowType) -> Unit) {
+fun MenuBarView(modifier: Modifier = Modifier, settings: Settings, onMenuBarCLick: (SubWindowType) -> Unit) {
     MenuBar(modifier = modifier.padding(0.dp)) {
         MenuBarButton(text = "+", fontSize = 20.sp, settings = settings) {
-            onAddClick(SubWindowType.ADD_ENTRY)
+            onMenuBarCLick(SubWindowType.ADD_ONETIME_ENTRY)
+        }
+        MenuBarButton(text = "++", fontSize = 20.sp, settings = settings) {
+            onMenuBarCLick(SubWindowType.ADD_REGULAR_ENTRY)
         }
     }
 }

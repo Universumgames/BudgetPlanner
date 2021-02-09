@@ -2,7 +2,8 @@ package de.universegame.budgetplanner.util
 
 enum class SubWindowType{
     NONE,
-    ADD_ENTRY
+    ADD_ONETIME_ENTRY,
+    ADD_REGULAR_ENTRY
 }
 
 enum class AddEntryType(index: Int, name: String){

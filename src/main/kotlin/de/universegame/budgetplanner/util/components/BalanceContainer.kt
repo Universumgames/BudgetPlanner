@@ -70,6 +70,10 @@ class BalanceContainer {
             entry
         )
     }
+
+    fun addRegularEntry(entry: RegularBalanceEntry){
+        regularBalanceEntries.add(entry)
+    }
 }
 
 fun loadBalanceContainer(filename: String): BalanceContainer {
