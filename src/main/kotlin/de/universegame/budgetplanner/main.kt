@@ -1,3 +1,4 @@
+
 import androidx.compose.desktop.Window
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -12,11 +13,11 @@ fun main() = Window(
     title = "Budget Planner",
     icon = loadImageResource("ic_launcher.png"),
     size = IntSize(1300, 600),
-    centered = true
+    centered = true,
 )
 {
-    val balanceContainer = remember { mutableStateOf(loadBalanceContainer("data.json")) }
     val settings: Settings = Settings()
+    val balanceContainer = remember { mutableStateOf(loadBalanceContainer(settings.dataFileName, settings.jsonSerializer)) }
     AppView(balanceContainer, settings)
 }
 

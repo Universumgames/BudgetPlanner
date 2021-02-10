@@ -1,13 +1,39 @@
 package de.universegame.budgetplanner.util.components
 
+import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
+
+@Serializable
+data class IMonthlyEntries(
+    var entries: MutableList<IOneTimeBalanceEntry> = mutableListOf(),
+    var month: String = YearMonth.now().format(DateTimeFormatter.ofPattern("MM-yyyy"))
+){
+
+    fun toUsable():MonthlyEntries{
+        val usableEntries: MutableList<OneTimeBalanceEntry> = mutableListOf()
+        for(entry in entries){
+            usableEntries.add(entry.toUsable())
+        }
+        return MonthlyEntries(usableEntries, YearMonth.from(DateTimeFormatter.ofPattern("MM-yyyy").parse(month)))
+    }
+}
 
 data class MonthlyEntries(
     var entries: MutableList<OneTimeBalanceEntry> = mutableListOf(),
     var month: YearMonth
 ) {
+
+    fun toSerializable():IMonthlyEntries{
+        val serializableEntries = mutableListOf<IOneTimeBalanceEntry>()
+        for(entry in entries){
+            serializableEntries.add(entry.toSerializable())
+        }
+        return IMonthlyEntries(serializableEntries, month.format(DateTimeFormatter.ofPattern("MM-yyyy")))
+    }
+
     val oneTimeTotal: Double
         get() {
             var totalV: Double = 0.0

@@ -15,6 +15,7 @@ import de.universegame.budgetplanner.util.SubWindowType
 import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
 import de.universegame.budgetplanner.util.components.RegularBalanceEntry
+import de.universegame.budgetplanner.util.components.saveBalanceContainer
 import de.universegame.budgetplanner.util.composable.AppContainer
 import de.universegame.budgetplanner.views.ContentView
 import de.universegame.budgetplanner.views.MenuBarView
@@ -39,11 +40,13 @@ fun AppView(mutableContainer: MutableState<BalanceContainer>, settings: Settings
                 subWindow.value = SubWindowType.NONE
                 mutableContainer.value.addOneTimeEntry(entry)
                 println("added " + entry.amount + " to " + entry.date)
+                saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
 
             }, onAddRegularSubmit = { entry: RegularBalanceEntry ->
                 subWindow.value = SubWindowType.NONE
                 mutableContainer.value.addRegularEntry(entry)
                 println("added regular")
+                saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
             })
         MenuBarView(settings = settings) {
             subWindow.value = it
