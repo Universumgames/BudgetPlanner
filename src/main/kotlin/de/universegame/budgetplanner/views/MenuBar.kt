@@ -17,7 +17,7 @@ fun MenuBarView(modifier: Modifier = Modifier, settings: Settings, onMenuBarCLic
             onMenuBarCLick(SubWindowType.ADD_ONETIME_ENTRY)
         }
         MenuBarButton(text = "++", fontSize = 20.sp, settings = settings) {
-            onMenuBarCLick(SubWindowType.ADD_REGULAR_ENTRY)
+            onMenuBarCLick(SubWindowType.ADD_RECURRING_ENTRY)
         }
     }
 }

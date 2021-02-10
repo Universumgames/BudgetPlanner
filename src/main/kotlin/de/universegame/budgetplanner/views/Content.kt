@@ -12,10 +12,10 @@ import de.universegame.budgetplanner.util.Settings
 import de.universegame.budgetplanner.util.SubWindowType
 import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
-import de.universegame.budgetplanner.util.components.RegularBalanceEntry
+import de.universegame.budgetplanner.util.components.RecurringBalanceEntry
 import de.universegame.budgetplanner.util.components.currentMonth
 import de.universegame.budgetplanner.views.add.AddOneTimeEntryView
-import de.universegame.budgetplanner.views.add.AddRegularEntryView
+import de.universegame.budgetplanner.views.add.AddRecurringEntryView
 
 @Composable
 fun ContentView(
@@ -24,7 +24,7 @@ fun ContentView(
     modifier: Modifier = Modifier,
     subWindow: SubWindowType = SubWindowType.NONE,
     onAddOneTimeSubmit: (entry: OneTimeBalanceEntry) -> Unit,
-    onAddRegularSubmit: (entry: RegularBalanceEntry) -> Unit,
+    onAddRecurringSubmit: (entry: RecurringBalanceEntry) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -65,9 +65,9 @@ fun ContentView(
                                     AddOneTimeEntryView { entry: OneTimeBalanceEntry ->
                                         onAddOneTimeSubmit(entry)
                                     }
-                                SubWindowType.ADD_REGULAR_ENTRY ->
-                                    AddRegularEntryView { entry: RegularBalanceEntry ->
-                                        onAddRegularSubmit(entry)
+                                SubWindowType.ADD_RECURRING_ENTRY ->
+                                    AddRecurringEntryView { entry: RecurringBalanceEntry ->
+                                        onAddRecurringSubmit(entry)
                                     }
                                 SubWindowType.NONE -> {
                                 }

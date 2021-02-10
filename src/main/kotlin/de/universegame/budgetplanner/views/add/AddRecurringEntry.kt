@@ -13,19 +13,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.components.Interval
-import de.universegame.budgetplanner.util.components.RegularBalanceEntry
+import de.universegame.budgetplanner.util.components.RecurringBalanceEntry
 import de.universegame.budgetplanner.util.composable.*
 import java.time.LocalDate
 
 //ToDo try to make textfields smaller
 
 @Composable
-fun AddRegularEntryView(
+fun AddRecurringEntryView(
     colorScheme: BalanceListColors = BalanceListColors(),
-    onSubmitClick: (RegularBalanceEntry) -> Unit
+    onSubmitClick: (RecurringBalanceEntry) -> Unit
 ) {
     ScrollColumn(Modifier.fillMaxSize().padding(5.dp)) {
-        val entry = remember { mutableStateOf(RegularBalanceEntry(0.0, "Not defined", 0)) }
+        val entry = remember { mutableStateOf(RecurringBalanceEntry(0.0, "Not defined", 0)) }
         val amountInput = remember { mutableStateOf("0.0") }
         val error = remember { mutableStateOf("") }
         val selectedInterval = remember { mutableStateOf(0) }

@@ -3,7 +3,7 @@ import androidx.compose.desktop.Window
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.IntSize
-import de.universegame.budgetplanner.AppView
+import de.universegame.budgetplanner.views.AppView
 import de.universegame.budgetplanner.util.Settings
 import de.universegame.budgetplanner.util.components.loadBalanceContainer
 import java.awt.image.BufferedImage

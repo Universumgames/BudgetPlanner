@@ -1,4 +1,4 @@
-package de.universegame.budgetplanner
+package de.universegame.budgetplanner.views
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,11 +14,9 @@ import de.universegame.budgetplanner.util.Settings
 import de.universegame.budgetplanner.util.SubWindowType
 import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
-import de.universegame.budgetplanner.util.components.RegularBalanceEntry
+import de.universegame.budgetplanner.util.components.RecurringBalanceEntry
 import de.universegame.budgetplanner.util.components.saveBalanceContainer
 import de.universegame.budgetplanner.util.composable.AppContainer
-import de.universegame.budgetplanner.views.ContentView
-import de.universegame.budgetplanner.views.MenuBarView
 
 
 val DarkTheme = darkColors(surface = Color(0xff1d1d1d), background = Color(0xff2d2d2d), primary = Color(0xff5d5d5d))
@@ -42,10 +40,10 @@ fun AppView(mutableContainer: MutableState<BalanceContainer>, settings: Settings
                 println("added " + entry.amount + " to " + entry.date)
                 saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
 
-            }, onAddRegularSubmit = { entry: RegularBalanceEntry ->
+            }, onAddRecurringSubmit = { entry: RecurringBalanceEntry ->
                 subWindow.value = SubWindowType.NONE
-                mutableContainer.value.addRegularEntry(entry)
-                println("added regular")
+                mutableContainer.value.addRecurringEntry(entry)
+                println("added recurring")
                 saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
             })
         MenuBarView(settings = settings) {

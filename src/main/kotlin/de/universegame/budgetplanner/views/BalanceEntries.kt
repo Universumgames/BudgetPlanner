@@ -1,4 +1,4 @@
-package de.universegame.budgetplanner.util.composable
+package de.universegame.budgetplanner.views
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,7 +24,7 @@ fun BalanceEntryRow(
     onClick: (IBalanceEntry) -> Unit,
     colorScheme: BalanceListColors = BalanceListColors()
 ) {
-    Surface(color = if (entry.type == EntryType.ONE_TIME) colorScheme.oneTimeEntryBgColor else colorScheme.regularEntryBgColor) {
+    Surface(color = if (entry.type == EntryType.ONE_TIME) colorScheme.oneTimeEntryBgColor else colorScheme.recurringEntryBgColor) {
         Row(modifier = modifier.fillMaxWidth().clickable { onClick(entry) }, Arrangement.SpaceEvenly) {
             Column {
                 Text(date.toString(), color = colorScheme.fontColor)
@@ -52,7 +52,7 @@ fun YearOverviewRow(
     colorScheme: BalanceListColors = BalanceListColors(),
     entry: YearlyEntries,
     currency: String,
-    timedList: MutableList<RegularBalanceEntry>,
+    timedList: MutableList<RecurringBalanceEntry>,
     container: BalanceContainer,
     onClick: () -> Unit
 ) {
@@ -93,7 +93,7 @@ fun MonthOverviewRow(
     colorScheme: BalanceListColors = BalanceListColors(),
     entry: MonthlyEntries,
     currency: String,
-    timedList: MutableList<RegularBalanceEntry>,
+    timedList: MutableList<RecurringBalanceEntry>,
     container: BalanceContainer,
     onClick: () -> Unit,
 ) {

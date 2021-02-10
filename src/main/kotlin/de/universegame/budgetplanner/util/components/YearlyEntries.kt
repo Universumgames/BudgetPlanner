@@ -49,7 +49,7 @@ data class YearlyEntries(
             return totalV
         }
 
-    fun total(timedList: List<RegularBalanceEntry>): Double {
+    fun total(timedList: List<RecurringBalanceEntry>): Double {
         var total = 0.0
         months.forEach { month ->
             total += month.total(timedList)

@@ -15,7 +15,7 @@ enum class Interval(val id: Int, val prettyName: String) {
     ANNUAL(6, "Yearly")
 }
 
-data class RegularBalanceEntry(
+data class RecurringBalanceEntry(
     override var amount: Double,
     override var usage: String,
     override var containerId: Int = 0,
@@ -24,10 +24,10 @@ data class RegularBalanceEntry(
     var interval: Interval = Interval.MONTHLY
 ) : IBalanceEntry {
     override val type: EntryType
-        get() = EntryType.REGULAR
+        get() = EntryType.RECURRING
 
-    override fun toSerializable(): IRegularBalanceEntry {
-        return IRegularBalanceEntry(
+    override fun toSerializable(): IRecurringBalanceEntry {
+        return IRecurringBalanceEntry(
             amount,
             usage,
             containerId,
@@ -40,28 +40,28 @@ data class RegularBalanceEntry(
         )
     }
 
-    override fun toUsable(): RegularBalanceEntry {
+    override fun toUsable(): RecurringBalanceEntry {
         return this
     }
 }
 
 @Serializable
-data class IRegularBalanceEntry(
+data class IRecurringBalanceEntry(
     override var amount: Double = 0.0,
     override var usage: String = "",
     override var containerId: Int = 0,
-    override val type: EntryType = EntryType.REGULAR,
+    override val type: EntryType = EntryType.RECURRING,
     var interval: Interval = Interval.MONTHLY,
     val startDate: String = LocalDate.now().toString(),
     val endDate: String = LocalDate.now().toString()
 ) : IBalanceEntry {
 
-    override fun toSerializable(): IRegularBalanceEntry {
+    override fun toSerializable(): IRecurringBalanceEntry {
         return this
     }
 
-    override fun toUsable(): RegularBalanceEntry {
-        return RegularBalanceEntry(
+    override fun toUsable(): RecurringBalanceEntry {
+        return RecurringBalanceEntry(
             amount,
             usage,
             containerId,

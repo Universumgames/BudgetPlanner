@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.sp
 import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.MonthlyEntries
-import de.universegame.budgetplanner.util.composable.BalanceEntryRow
 import de.universegame.budgetplanner.util.composable.ScrollColumn
 import de.universegame.budgetplanner.util.toCurrencyString
 import de.universegame.budgetplanner.util.toSimpleFullName
@@ -26,7 +25,7 @@ fun MonthOverviewView(
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             val total = container.totalTil(month.month)
-            val change = month.total(container.regularBalanceEntries)
+            val change = month.total(container.recurringBalanceEntries)
             Text(
                 change.toCurrencyString("€"),
                 fontSize = 30.sp,

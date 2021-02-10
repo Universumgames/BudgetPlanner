@@ -19,22 +19,22 @@ data class BalanceLocationName(
 @Serializable
 data class IBalanceContainer(
     var locationNames: MutableList<BalanceLocationName> = mutableListOf(BalanceLocationName("Wallet", 0)),
-    var regularBalanceEntries: MutableList<IRegularBalanceEntry> = mutableListOf(),
+    var recurringBalanceEntries: MutableList<IRecurringBalanceEntry> = mutableListOf(),
     var entries: MutableMap<Int, IYearlyEntries> = mutableMapOf()
 ) {
 
     fun toUsable(): BalanceContainer {
-        val usableRegularBalanceEntries: MutableList<RegularBalanceEntry> = mutableListOf()
+        val usableRecurringBalanceEntries: MutableList<RecurringBalanceEntry> = mutableListOf()
         val usableEntries: MutableMap<Year, YearlyEntries> = mutableMapOf()
-        for (regularEntry in regularBalanceEntries) {
-            usableRegularBalanceEntries.add(regularEntry.toUsable())
+        for (recurringEntry in recurringBalanceEntries) {
+            usableRecurringBalanceEntries.add(recurringEntry.toUsable())
         }
         for (entry in entries) {
             usableEntries[Year.of(entry.key)] = entry.value.toUsable()
         }
         val container = BalanceContainer()
         container.locationNames = locationNames
-        container.regularBalanceEntries = usableRegularBalanceEntries
+        container.recurringBalanceEntries = usableRecurringBalanceEntries
         container.entries = usableEntries
         return container
     }
@@ -42,19 +42,19 @@ data class IBalanceContainer(
 
 class BalanceContainer {
     var locationNames: MutableList<BalanceLocationName> = mutableListOf(BalanceLocationName("Wallet", 0))
-    var regularBalanceEntries: MutableList<RegularBalanceEntry> = mutableListOf()
+    var recurringBalanceEntries: MutableList<RecurringBalanceEntry> = mutableListOf()
     var entries: MutableMap<Year, YearlyEntries> = mutableMapOf()
 
     fun toSerializable(): IBalanceContainer {
-        val serializableRegularBalanceEntries: MutableList<IRegularBalanceEntry> = mutableListOf()
+        val serializableRecurringBalanceEntries: MutableList<IRecurringBalanceEntry> = mutableListOf()
         val serializableEntries: MutableMap<Int, IYearlyEntries> = mutableMapOf()
-        for (regularEntry in regularBalanceEntries) {
-            serializableRegularBalanceEntries.add(regularEntry.toSerializable())
+        for (recurringEntry in recurringBalanceEntries) {
+            serializableRecurringBalanceEntries.add(recurringEntry.toSerializable())
         }
         for (entry in entries) {
             serializableEntries[entry.key.value] = entry.value.toSerializable()
         }
-        return IBalanceContainer(locationNames, serializableRegularBalanceEntries, serializableEntries)
+        return IBalanceContainer(locationNames, serializableRecurringBalanceEntries, serializableEntries)
     }
 
     fun sortedEntries(): MutableMap<Year, YearlyEntries> {
@@ -67,7 +67,7 @@ class BalanceContainer {
         val sorted = sortedEntries()
         for (entry in sorted) {
             if (entry.key > year) break
-            total += entry.value.total(regularBalanceEntries)
+            total += entry.value.total(recurringBalanceEntries)
         }
         return total
     }
@@ -79,7 +79,7 @@ class BalanceContainer {
             if (entry.key.value > month.year) break
             for (monthEntry in entry.value.months) {
                 if (monthEntry.month.monthValue > month.monthValue) break
-                total += monthEntry.total(regularBalanceEntries)
+                total += monthEntry.total(recurringBalanceEntries)
             }
         }
         return total
@@ -114,8 +114,8 @@ class BalanceContainer {
         )
     }
 
-    fun addRegularEntry(entry: RegularBalanceEntry) {
-        regularBalanceEntries.add(entry)
+    fun addRecurringEntry(entry: RecurringBalanceEntry) {
+        recurringBalanceEntries.add(entry)
     }
 }
 
@@ -142,9 +142,9 @@ fun exampleContainer(): BalanceContainer {
     }
     for (i in 0..10) {
         val interval = Interval.values()[Random.nextInt(1, Interval.values().size - 1)]
-        container.regularBalanceEntries.add(
-            RegularBalanceEntry(
-                Random.nextDouble(-500.0, 500.0), "regular${interval.prettyName}",
+        container.recurringBalanceEntries.add(
+            RecurringBalanceEntry(
+                Random.nextDouble(-500.0, 500.0), "recurringEntry${interval.prettyName}",
                 0,
                 LocalDate.now().plusDays(Random.nextLong(-31, 31)),
                 interval = interval

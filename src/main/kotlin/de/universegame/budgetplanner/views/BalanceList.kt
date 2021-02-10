@@ -10,9 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.MonthlyEntries
-import de.universegame.budgetplanner.util.composable.MonthOverviewRow
 import de.universegame.budgetplanner.util.composable.ScrollColumn
-import de.universegame.budgetplanner.util.composable.YearOverviewRow
 import java.time.LocalDate
 
 @Composable
@@ -25,7 +23,7 @@ fun BalanceListView(balanceContainer: BalanceContainer, onMonthSelected: (Monthl
             YearOverviewRow(
                 modifier = Modifier.padding(top = 10.dp, bottom = 10.dp),
                 entry = yearEntry,
-                timedList = balanceContainer.regularBalanceEntries,
+                timedList = balanceContainer.recurringBalanceEntries,
                 currency = "€",
                 container = balanceContainer
             ) {
@@ -34,12 +32,12 @@ fun BalanceListView(balanceContainer: BalanceContainer, onMonthSelected: (Monthl
 
             if (dropdown.value)
                 for (month in yearEntry.months) {
-                    val total = month.total(balanceContainer.regularBalanceEntries)
+                    val total = month.total(balanceContainer.recurringBalanceEntries)
                     if (total != 0.0) {
                         MonthOverviewRow(
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             entry = month,
-                            timedList = balanceContainer.regularBalanceEntries,
+                            timedList = balanceContainer.recurringBalanceEntries,
                             currency = "€",
                             container = balanceContainer
                         ) {

@@ -16,5 +16,5 @@ interface IBalanceEntry {
 @Serializable
 enum class EntryType {
     ONE_TIME,
-    REGULAR
+    RECURRING
 }
