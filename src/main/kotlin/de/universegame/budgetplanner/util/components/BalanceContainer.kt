@@ -85,7 +85,7 @@ class BalanceContainer {
         return total
     }
 
-    fun addOneTimeEntry(date: LocalDate, amount: Double, containerId: Int = 0, usage: String = "undefined") {
+    fun addOneTimeEntry(date: LocalDate, amount: Double, containerId: Int = 0, usage: String = "undefined", name: String = "") {
         val year = Year.of(date.year)
         var yearEntries: YearlyEntries = YearlyEntries(year)
         if (entries.containsKey(year)) {
@@ -97,7 +97,8 @@ class BalanceContainer {
                 amount,
                 date = date,
                 containerId = containerId,
-                usage = usage
+                usage = usage,
+                name = name
             )
         )
     }
@@ -112,6 +113,10 @@ class BalanceContainer {
         yearEntries.months[entry.date.monthValue - 1].entries.add(
             entry
         )
+    }
+
+    fun addOneTimeEntryList(entries: List<OneTimeBalanceEntry>){
+        entries.forEach { addOneTimeEntry(it) }
     }
 
     fun addRecurringEntry(entry: RecurringBalanceEntry) {
@@ -135,7 +140,8 @@ fun exampleContainer(): BalanceContainer {
                 Random.nextDouble(-500.0, 500.0),
                 "test",
                 0,
-                date = LocalDate.of(year.value, month + 1, day)
+                date = LocalDate.of(year.value, month + 1, day),
+                name = "name"
             )
         )
         container.entries[year] = t
@@ -146,6 +152,7 @@ fun exampleContainer(): BalanceContainer {
             RecurringBalanceEntry(
                 Random.nextDouble(-500.0, 500.0), "recurringEntry${interval.prettyName}",
                 0,
+                "random name",
                 LocalDate.now().plusDays(Random.nextLong(-31, 31)),
                 interval = interval
             )

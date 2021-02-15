@@ -19,6 +19,7 @@ data class RecurringBalanceEntry(
     override var amount: Double,
     override var usage: String,
     override var containerId: Int = 0,
+    override var name: String,
     var startTime: LocalDate = LocalDate.now(),
     var endTime: LocalDate = LocalDate.now().plusYears(1),
     var interval: Interval = Interval.MONTHLY
@@ -31,6 +32,7 @@ data class RecurringBalanceEntry(
             amount,
             usage,
             containerId,
+            name,
             type,
             interval,
             startTime.format(DateTimeFormatter.ISO_LOCAL_DATE),
@@ -50,6 +52,7 @@ data class IRecurringBalanceEntry(
     override var amount: Double = 0.0,
     override var usage: String = "",
     override var containerId: Int = 0,
+    override var name: String,
     override val type: EntryType = EntryType.RECURRING,
     var interval: Interval = Interval.MONTHLY,
     val startDate: String = LocalDate.now().toString(),
@@ -65,6 +68,7 @@ data class IRecurringBalanceEntry(
             amount,
             usage,
             containerId,
+            name,
             LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(startDate)),
             LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(endDate)),
             interval

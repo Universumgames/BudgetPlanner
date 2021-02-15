@@ -59,6 +59,7 @@ data class MonthlyEntries(
                                         recurring.amount,
                                         recurring.usage,
                                         recurring.containerId,
+                                        recurring.name,
                                         LocalDate.of(month.year, month.monthValue, i),
                                         EntryType.RECURRING
                                     )
@@ -77,6 +78,7 @@ data class MonthlyEntries(
                                             recurring.amount,
                                             recurring.usage,
                                             recurring.containerId,
+                                            recurring.name,
                                             LocalDate.of(month.year, month.monthValue, now.dayOfMonth),
                                             EntryType.RECURRING
                                         )
@@ -96,6 +98,7 @@ data class MonthlyEntries(
                                             recurring.amount,
                                             recurring.usage,
                                             recurring.containerId,
+                                            recurring.name,
                                             LocalDate.of(month.year, month.monthValue, now.dayOfMonth),
                                             EntryType.RECURRING
                                         )
@@ -110,6 +113,7 @@ data class MonthlyEntries(
                                 recurring.amount,
                                 recurring.usage,
                                 recurring.containerId,
+                                recurring.name,
                                 LocalDate.of(month.year, month.monthValue, recurring.startTime.dayOfMonth),
                                 EntryType.RECURRING
                             )
@@ -122,6 +126,7 @@ data class MonthlyEntries(
                                     recurring.amount,
                                     recurring.usage,
                                     recurring.containerId,
+                                    recurring.name,
                                     LocalDate.of(month.year, month.monthValue, recurring.startTime.dayOfMonth),
                                     EntryType.RECURRING
                                 )
@@ -135,6 +140,7 @@ data class MonthlyEntries(
                                     recurring.amount,
                                     recurring.usage,
                                     recurring.containerId,
+                                    recurring.name,
                                     LocalDate.of(month.year, month.monthValue, recurring.startTime.dayOfMonth),
                                     EntryType.RECURRING
                                 )
@@ -148,6 +154,7 @@ data class MonthlyEntries(
                                     recurring.amount,
                                     recurring.usage,
                                     recurring.containerId,
+                                    recurring.name,
                                     LocalDate.of(
                                         month.year,
                                         recurring.startTime.monthValue,

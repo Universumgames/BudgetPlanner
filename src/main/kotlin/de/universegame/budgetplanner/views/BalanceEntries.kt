@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.components.*
+import de.universegame.budgetplanner.util.short
 import de.universegame.budgetplanner.util.toCurrencyString
 import de.universegame.budgetplanner.util.toSimpleFullName
 import java.time.LocalDate
@@ -36,7 +37,10 @@ fun BalanceEntryRow(
                 )
             }
             Column {
-                Text(entry.usage, color = colorScheme.fontColor)
+                Text(entry.name.short(30), color = colorScheme.fontColor)
+            }
+            Column {
+                Text(entry.usage.short(20), color = colorScheme.fontColor)
             }
             Column {
                 Text(entry.containerId.toString(), color = colorScheme.fontColor)

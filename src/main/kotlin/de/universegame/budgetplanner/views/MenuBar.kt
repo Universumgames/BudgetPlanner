@@ -19,5 +19,8 @@ fun MenuBarView(modifier: Modifier = Modifier, settings: Settings, onMenuBarCLic
         MenuBarButton(text = "++", fontSize = 20.sp, settings = settings) {
             onMenuBarCLick(SubWindowType.ADD_RECURRING_ENTRY)
         }
+        MenuBarButton(text = "Import", fontSize = 20.sp, settings = settings, bold = false) {
+            onMenuBarCLick(SubWindowType.IMPORT)
+        }
     }
 }

@@ -14,8 +14,9 @@ import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
 import de.universegame.budgetplanner.util.components.RecurringBalanceEntry
 import de.universegame.budgetplanner.util.components.currentMonth
-import de.universegame.budgetplanner.views.add.AddOneTimeEntryView
-import de.universegame.budgetplanner.views.add.AddRecurringEntryView
+import de.universegame.budgetplanner.views.subwindows.AddOneTimeEntryView
+import de.universegame.budgetplanner.views.subwindows.AddRecurringEntryView
+import de.universegame.budgetplanner.views.subwindows.ImportEntriesView
 
 @Composable
 fun ContentView(
@@ -25,6 +26,7 @@ fun ContentView(
     subWindow: SubWindowType = SubWindowType.NONE,
     onAddOneTimeSubmit: (entry: OneTimeBalanceEntry) -> Unit,
     onAddRecurringSubmit: (entry: RecurringBalanceEntry) -> Unit,
+    onImportSubmit: (entries: List<OneTimeBalanceEntry>) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -32,7 +34,7 @@ fun ContentView(
     ) {
         val selectedMonth = remember { mutableStateOf(currentMonth(container)) }
         Surface(color = settings.colorScheme.widgetBgColor, shape = RoundedCornerShape(5.dp)) {
-            Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(0.6f)) {
+            Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(0.3f)) {
                 BalanceListView(container) {
                     selectedMonth.value = it
                 }
@@ -68,6 +70,10 @@ fun ContentView(
                                 SubWindowType.ADD_RECURRING_ENTRY ->
                                     AddRecurringEntryView { entry: RecurringBalanceEntry ->
                                         onAddRecurringSubmit(entry)
+                                    }
+                                SubWindowType.IMPORT ->
+                                    ImportEntriesView{ entries: List<OneTimeBalanceEntry>->
+                                        onImportSubmit(entries)
                                     }
                                 SubWindowType.NONE -> {
                                 }

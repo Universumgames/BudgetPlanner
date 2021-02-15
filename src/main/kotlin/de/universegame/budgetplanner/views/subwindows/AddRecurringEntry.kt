@@ -1,4 +1,4 @@
-package de.universegame.budgetplanner.views.add
+package de.universegame.budgetplanner.views.subwindows
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +25,7 @@ fun AddRecurringEntryView(
     onSubmitClick: (RecurringBalanceEntry) -> Unit
 ) {
     ScrollColumn(Modifier.fillMaxSize().padding(5.dp)) {
-        val entry = remember { mutableStateOf(RecurringBalanceEntry(0.0, "Not defined", 0)) }
+        val entry = remember { mutableStateOf(RecurringBalanceEntry(0.0, "Not defined", 0, "")) }
         val amountInput = remember { mutableStateOf("0.0") }
         val error = remember { mutableStateOf("") }
         val selectedInterval = remember { mutableStateOf(0) }
@@ -34,6 +34,7 @@ fun AddRecurringEntryView(
         val date2Input = remember { mutableStateOf(LocalDate.now()) }
         val date2Set = remember { mutableStateOf(false) }
         val usage = remember { mutableStateOf("") }
+        val name = remember { mutableStateOf("") }
 
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             TextField(
@@ -58,31 +59,54 @@ fun AddRecurringEntryView(
                 }
                 entry.value.amount = amount
                 entry.value.usage = usage.value
+                entry.value.name = name.value
                 onSubmitClick(entry.value)
             }, text = "Submit")
         }
 
         SimpleFlowRow(modifier = Modifier.fillMaxWidth(), horizontalGap = 2.dp, verticalGap = 5.dp) {
-            for (i in Interval.values()) {
-                CustomRadioButton(selectedInterval, i.id, i.prettyName, colorScheme.fontColor)
-                Spacer(Modifier.width(2.dp))
+            Row(modifier=Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+                for (i in Interval.values()) {
+                    CustomRadioButton(selectedInterval, i.id, i.prettyName, colorScheme.fontColor)
+                    Spacer(Modifier.width(2.dp))
+                }
             }
         }
         Spacer(Modifier.size(3.dp))
-        Row {
-            Text("Usage", color = Color.White)
+        Row(modifier=Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row {
+                Text("Usage", color = Color.White)
 
-            TextField(
-                usage.value,
-                onValueChange = {
-                    usage.value = it
-                },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(0.4f),
-                shape = RoundedCornerShape(5.dp),
-                activeColor = Color.White,
-                textStyle = TextStyle(colorScheme.fontColor)
-            )
+                TextField(
+                    usage.value,
+                    onValueChange = {
+                        usage.value = it
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    shape = RoundedCornerShape(5.dp),
+                    activeColor = Color.White,
+                    textStyle = TextStyle(colorScheme.fontColor)
+                )
+            }
+        }
+        Spacer(Modifier.size(3.dp))
+        Row(modifier=Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row {
+                Text("Name", color = Color.White)
+
+                TextField(
+                    name.value,
+                    onValueChange = {
+                        name.value = it
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    shape = RoundedCornerShape(5.dp),
+                    activeColor = Color.White,
+                    textStyle = TextStyle(colorScheme.fontColor)
+                )
+            }
         }
         Spacer(Modifier.size(3.dp))
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {

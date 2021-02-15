@@ -1,4 +1,4 @@
-package de.universegame.budgetplanner.views.add
+package de.universegame.budgetplanner.views.subwindows
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,12 +26,13 @@ fun AddOneTimeEntryView(
     onSubmitClick: (OneTimeBalanceEntry) -> Unit
 ) {
     ScrollColumn(Modifier.fillMaxSize().padding(5.dp)) {
-        val entry = remember { mutableStateOf(OneTimeBalanceEntry(0.0, "Not defined", 0)) }
+        val entry = remember { mutableStateOf(OneTimeBalanceEntry(0.0, "Not defined", 0, "")) }
         val amountInput = remember { mutableStateOf("0.0") }
         val error = remember { mutableStateOf("") }
         val dateInput = remember { mutableStateOf(LocalDate.now()) }
         val dateSet = remember { mutableStateOf(false) }
         val usage = remember { mutableStateOf("") }
+        val name = remember { mutableStateOf("") }
 
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             TextField(
@@ -56,25 +57,47 @@ fun AddOneTimeEntryView(
                 }
                 entry.value.amount = amount
                 entry.value.usage = usage.value
+                entry.value.name = name.value
                 if (amount > 0)
                     onSubmitClick(entry.value)
             }, text = "Submit")
         }
 
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-            Text("Usage", color = Color.White)
+            Row {
 
-            TextField(
-                usage.value,
-                onValueChange = {
-                    usage.value = it
-                },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(0.4f),
-                shape = RoundedCornerShape(5.dp),
-                activeColor = Color.White,
-                textStyle = TextStyle(colorScheme.fontColor)
-            )
+                Text("Usage", color = Color.White)
+
+                TextField(
+                    usage.value,
+                    onValueChange = {
+                        usage.value = it
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    shape = RoundedCornerShape(5.dp),
+                    activeColor = Color.White,
+                    textStyle = TextStyle(colorScheme.fontColor)
+                )
+            }
+        }
+
+        Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row {
+                Text("Name", color = Color.White)
+
+                TextField(
+                    name.value,
+                    onValueChange = {
+                        name.value = it
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    shape = RoundedCornerShape(5.dp),
+                    activeColor = Color.White,
+                    textStyle = TextStyle(colorScheme.fontColor)
+                )
+            }
         }
 
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {

@@ -8,6 +8,7 @@ interface IBalanceEntry {
     var usage: String
     var containerId: Int
     val type: EntryType
+    val name: String
 
     fun toSerializable():IBalanceEntry
     fun toUsable():IBalanceEntry

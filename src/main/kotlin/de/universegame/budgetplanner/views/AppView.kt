@@ -45,6 +45,10 @@ fun AppView(mutableContainer: MutableState<BalanceContainer>, settings: Settings
                 mutableContainer.value.addRecurringEntry(entry)
                 println("added recurring")
                 saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
+            }, onImportSubmit = { entries: List<OneTimeBalanceEntry> ->
+                subWindow.value = SubWindowType.NONE
+                mutableContainer.value.addOneTimeEntryList(entries)
+                saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
             })
         MenuBarView(settings = settings) {
             subWindow.value = it

@@ -16,7 +16,7 @@ import java.time.Year
 
 @Composable
 fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.White, onSubmit: (LocalDate) -> Unit) {
-    SimpleFlowRow(modifier.fillMaxWidth().padding(5.dp), horizontalGap = 2.dp, verticalGap = 5.dp) {
+    SimpleFlowRow(modifier.padding(5.dp), horizontalGap = 2.dp, verticalGap = 5.dp) {
         val localDate = LocalDate.now()
         val day = remember { mutableStateOf(localDate.dayOfMonth.toString()) }
         val month = remember { mutableStateOf(localDate.monthValue.toString()) }
@@ -102,6 +102,5 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
                 println(e.stackTraceToString())
             }
         }, text = "Set Date")
-
     }
 }

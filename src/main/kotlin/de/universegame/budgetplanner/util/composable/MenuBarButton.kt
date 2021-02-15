@@ -35,6 +35,7 @@ fun MenuBarButton(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit = 10.sp,
+    bold: Boolean = true,
     onClick: () -> Unit
 ) {
     DefaultButton(
@@ -43,7 +44,7 @@ fun MenuBarButton(
         modifier = modifier,
         buttonBgColor = settings.colorScheme.defaultButtonBgColor,
         fontColor = settings.colorScheme.fontColor,
-        style = TextStyle(fontWeight = FontWeight.ExtraBold),
+        style = TextStyle(fontWeight = if(bold)FontWeight.ExtraBold else FontWeight.Normal),
         shape = settings.defaultShape,
         onClick = onClick
     )

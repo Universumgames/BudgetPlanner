@@ -29,3 +29,9 @@ fun Double.round(decimal: Int): Double{
 fun Double.toCurrencyString(currency: String, conditionalPlus: Boolean = true): String{
     return (if(this >= 0 && conditionalPlus) "+" else "") + this.round(2).toString() + currency
 }
+
+fun String.short(maxLength: Int): String{
+    return if(this.length > maxLength)
+        this.substring(0, maxLength-3) + "..."
+    else this
+}
