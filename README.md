@@ -1,0 +1,1 @@
+current type-support for importing: "CSV-CAMT-Format"

@@ -179,7 +179,5 @@ fun saveBalanceContainer(container: BalanceContainer, filename: String, json: Js
     }
     file.createNewFile()
     val data: String = json.encodeToString(container.toSerializable())
-    println(data)
     file.writeText(data)
-
 }

@@ -58,6 +58,7 @@ fun AddOneTimeEntryView(
                 entry.value.amount = amount
                 entry.value.usage = usage.value
                 entry.value.name = name.value
+                entry.value.date = dateInput.value
                 if (amount > 0)
                     onSubmitClick(entry.value)
             }, text = "Submit")

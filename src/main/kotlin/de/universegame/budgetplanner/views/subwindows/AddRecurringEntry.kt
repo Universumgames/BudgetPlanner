@@ -60,6 +60,8 @@ fun AddRecurringEntryView(
                 entry.value.amount = amount
                 entry.value.usage = usage.value
                 entry.value.name = name.value
+                entry.value.startTime = date1Input.value
+                entry.value.endTime = date2Input.value
                 onSubmitClick(entry.value)
             }, text = "Submit")
         }
