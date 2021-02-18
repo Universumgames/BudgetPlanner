@@ -11,16 +11,40 @@ data class OneTimeBalanceEntry(
     override var name: String,
     var date: LocalDate = LocalDate.now(),
     val displayTypeOverride: EntryType = EntryType.ONE_TIME
-): IBalanceEntry {
+) : IBalanceEntry {
     override val type: EntryType
         get() = displayTypeOverride
 
     override fun toSerializable(): IOneTimeBalanceEntry {
-        return IOneTimeBalanceEntry(amount, usage, containerId, name, date.format(DateTimeFormatter.ISO_LOCAL_DATE), displayTypeOverride)
+        return IOneTimeBalanceEntry(
+            amount,
+            usage,
+            containerId,
+            name,
+            date.format(DateTimeFormatter.ISO_LOCAL_DATE),
+            displayTypeOverride
+        )
     }
 
     override fun toUsable(): OneTimeBalanceEntry {
         return this
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other == null || other !is OneTimeBalanceEntry) return false
+        return other.date == date && other.displayTypeOverride == displayTypeOverride &&
+                other.amount == amount && other.name == name && other.usage == usage && other.type == type &&
+                other.containerId == containerId
+    }
+
+    override fun hashCode(): Int {
+        var result = amount.hashCode()
+        result = 31 * result + usage.hashCode()
+        result = 31 * result + containerId
+        result = 31 * result + name.hashCode()
+        result = 31 * result + date.hashCode()
+        result = 31 * result + displayTypeOverride.hashCode()
+        return result
     }
 
 
@@ -34,13 +58,19 @@ data class IOneTimeBalanceEntry(
     override var name: String,
     val dateString: String = LocalDate.now().toString(),
     override val type: EntryType = EntryType.ONE_TIME
-): IBalanceEntry {
+) : IBalanceEntry {
 
     override fun toSerializable(): IOneTimeBalanceEntry {
         return this
     }
 
     override fun toUsable(): OneTimeBalanceEntry {
-       return OneTimeBalanceEntry(amount, usage, containerId, name, LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(dateString)))
+        return OneTimeBalanceEntry(
+            amount,
+            usage,
+            containerId,
+            name,
+            LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(dateString))
+        )
     }
 }

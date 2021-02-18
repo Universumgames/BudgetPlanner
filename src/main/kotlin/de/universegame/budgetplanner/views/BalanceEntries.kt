@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.components.*
+import de.universegame.budgetplanner.util.composable.DefaultButton
 import de.universegame.budgetplanner.util.short
 import de.universegame.budgetplanner.util.toCurrencyString
 import de.universegame.budgetplanner.util.toSimpleFullName
@@ -22,7 +23,9 @@ fun BalanceEntryRow(
     entry: IBalanceEntry,
     date: LocalDate,
     currency: String,
+    viewDeleteButton: Boolean,
     onClick: (IBalanceEntry) -> Unit,
+    onDelete: (IBalanceEntry) -> Unit,
     colorScheme: BalanceListColors = BalanceListColors()
 ) {
     Surface(color = if (entry.type == EntryType.ONE_TIME) colorScheme.oneTimeEntryBgColor else colorScheme.recurringEntryBgColor) {
@@ -44,6 +47,13 @@ fun BalanceEntryRow(
             }
             Column {
                 Text(entry.containerId.toString(), color = colorScheme.fontColor)
+            }
+            if (viewDeleteButton) {
+                Column {
+                    DefaultButton("Delete") {
+                        onDelete(entry)
+                    }
+                }
             }
         }
     }

@@ -10,12 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.Settings
 import de.universegame.budgetplanner.util.SubWindowType
-import de.universegame.budgetplanner.util.components.BalanceContainer
-import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
-import de.universegame.budgetplanner.util.components.RecurringBalanceEntry
-import de.universegame.budgetplanner.util.components.currentMonth
+import de.universegame.budgetplanner.util.components.*
 import de.universegame.budgetplanner.views.subwindows.AddOneTimeEntryView
 import de.universegame.budgetplanner.views.subwindows.AddRecurringEntryView
+import de.universegame.budgetplanner.views.subwindows.AddWalletView
 import de.universegame.budgetplanner.views.subwindows.ImportEntriesView
 
 @Composable
@@ -24,9 +22,12 @@ fun ContentView(
     settings: Settings,
     modifier: Modifier = Modifier,
     subWindow: SubWindowType = SubWindowType.NONE,
+    tmp: Boolean,
     onAddOneTimeSubmit: (entry: OneTimeBalanceEntry) -> Unit,
     onAddRecurringSubmit: (entry: RecurringBalanceEntry) -> Unit,
     onImportSubmit: (entries: List<OneTimeBalanceEntry>) -> Unit,
+    onAddWalletSubmit: (name: String) -> Unit,
+    onEntryDelete: (IBalanceEntry)->Unit
 ) {
     Row(
         modifier = Modifier
@@ -48,7 +49,9 @@ fun ContentView(
             ) {
                 Surface(color = settings.colorScheme.widgetBgColor, shape = RoundedCornerShape(5.dp)) {
                     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
-                        MonthOverviewView(selectedMonth.value, container = container)
+                        MonthOverviewView(selectedMonth.value, container = container, onEntryDelete = {
+                            onEntryDelete(it)
+                        })
                     }
                 }
             }
@@ -72,8 +75,12 @@ fun ContentView(
                                         onAddRecurringSubmit(entry)
                                     }
                                 SubWindowType.IMPORT ->
-                                    ImportEntriesView{ entries: List<OneTimeBalanceEntry>->
+                                    ImportEntriesView { entries: List<OneTimeBalanceEntry> ->
                                         onImportSubmit(entries)
+                                    }
+                                SubWindowType.ADD_WALLET ->
+                                    AddWalletView { name: String ->
+                                        onAddWalletSubmit(name)
                                     }
                                 SubWindowType.NONE -> {
                                 }

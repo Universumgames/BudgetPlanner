@@ -11,14 +11,14 @@ import java.time.YearMonth
 import kotlin.random.Random
 
 @Serializable
-data class BalanceLocationName(
+data class WalletData(
     val name: String,
     val id: Int
 )
 
 @Serializable
 data class IBalanceContainer(
-    var locationNames: MutableList<BalanceLocationName> = mutableListOf(BalanceLocationName("Wallet", 0)),
+    var walletNames: MutableList<WalletData> = mutableListOf(WalletData("Wallet", 0)),
     var recurringBalanceEntries: MutableList<IRecurringBalanceEntry> = mutableListOf(),
     var entries: MutableMap<Int, IYearlyEntries> = mutableMapOf()
 ) {
@@ -33,7 +33,7 @@ data class IBalanceContainer(
             usableEntries[Year.of(entry.key)] = entry.value.toUsable()
         }
         val container = BalanceContainer()
-        container.locationNames = locationNames
+        container.walletNames = walletNames
         container.recurringBalanceEntries = usableRecurringBalanceEntries
         container.entries = usableEntries
         return container
@@ -41,7 +41,7 @@ data class IBalanceContainer(
 }
 
 class BalanceContainer {
-    var locationNames: MutableList<BalanceLocationName> = mutableListOf(BalanceLocationName("Wallet", 0))
+    var walletNames: MutableList<WalletData> = mutableListOf(WalletData("Wallet", 0))
     var recurringBalanceEntries: MutableList<RecurringBalanceEntry> = mutableListOf()
     var entries: MutableMap<Year, YearlyEntries> = mutableMapOf()
 
@@ -54,7 +54,7 @@ class BalanceContainer {
         for (entry in entries) {
             serializableEntries[entry.key.value] = entry.value.toSerializable()
         }
-        return IBalanceContainer(locationNames, serializableRecurringBalanceEntries, serializableEntries)
+        return IBalanceContainer(walletNames, serializableRecurringBalanceEntries, serializableEntries)
     }
 
     fun sortedEntries(): MutableMap<Year, YearlyEntries> {
@@ -85,14 +85,14 @@ class BalanceContainer {
         return total
     }
 
-    fun addOneTimeEntry(date: LocalDate, amount: Double, containerId: Int = 0, usage: String = "undefined", name: String = "") {
-        val year = Year.of(date.year)
-        var yearEntries: YearlyEntries = YearlyEntries(year)
-        if (entries.containsKey(year)) {
-            yearEntries = entries[year]!!
-        } else
-            entries[year] = yearEntries
-        yearEntries.months[date.monthValue - 1].entries.add(
+    fun addOneTimeEntry(
+        date: LocalDate,
+        amount: Double,
+        containerId: Int = 0,
+        usage: String = "Custom Entry",
+        name: String = "No name declared"
+    ) {
+        addOneTimeEntry(
             OneTimeBalanceEntry(
                 amount,
                 date = date,
@@ -110,17 +110,32 @@ class BalanceContainer {
             yearEntries = entries[year]!!
         } else
             entries[year] = yearEntries
-        yearEntries.months[entry.date.monthValue - 1].entries.add(
-            entry
-        )
+        yearEntries.addOneTimeEntry(entry)
     }
 
-    fun addOneTimeEntryList(entries: List<OneTimeBalanceEntry>){
+    fun addOneTimeEntryList(entries: List<OneTimeBalanceEntry>) {
         entries.forEach { addOneTimeEntry(it) }
     }
 
     fun addRecurringEntry(entry: RecurringBalanceEntry) {
         recurringBalanceEntries.add(entry)
+    }
+
+    fun addWallet(name: String): Boolean {
+        if (name.isEmpty()) return false
+        if(walletNames.any { it.name == name }) return true
+        walletNames.add(WalletData(name, walletNames.size))
+        return true
+    }
+
+    fun deleteOneTimeEntry(entry: OneTimeBalanceEntry): Boolean{
+        val year = Year.of(entry.date.year)
+        var yearEntries: YearlyEntries = YearlyEntries(year)
+        if (entries.containsKey(year)) {
+            yearEntries = entries[year]!!
+        } else
+            entries[year] = yearEntries
+        return yearEntries.deleteOneTimeEntry(entry)
     }
 }
 

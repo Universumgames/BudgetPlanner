@@ -9,14 +9,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.plus
+import androidx.compose.ui.input.key.shortcuts
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.Settings
 import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
 import de.universegame.budgetplanner.util.composable.DefaultButton
+import java.awt.Toolkit
+import java.awt.datatransfer.DataFlavor
 import java.io.File
 import java.time.LocalDate
+
+
+
 
 @Composable
 fun ImportEntriesView(
@@ -41,7 +49,16 @@ fun ImportEntriesView(
                     filePath.value = it
                 },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth(0.4f),
+                modifier = Modifier.fillMaxWidth(0.4f).shortcuts {
+                    on(Key.CtrlLeft + Key.V ) {
+                        val c = Toolkit.getDefaultToolkit().systemClipboard
+                        filePath.value += c.getData(DataFlavor.stringFlavor) as String
+                    }
+                    on(Key.CtrlRight + Key.V ) {
+                        val c = Toolkit.getDefaultToolkit().systemClipboard
+                        filePath.value += c.getData(DataFlavor.stringFlavor) as String
+                    }
+                },
                 shape = RoundedCornerShape(5.dp),
                 activeColor = Color.White,
                 textStyle = TextStyle(colorScheme.fontColor)

@@ -56,4 +56,15 @@ data class YearlyEntries(
         }
         return total
     }
+
+    fun addOneTimeEntry(entry: OneTimeBalanceEntry): Boolean{
+        if(entry.date.year != year.value) return false
+        months[entry.date.monthValue - 1].addOneTimeEntry(entry)
+        return true
+    }
+
+    fun deleteOneTimeEntry(entry: OneTimeBalanceEntry): Boolean{
+        if(entry.date.year != year.value) return false
+        return months[entry.date.monthValue - 1].deleteOneTimeEntry(entry)
+    }
 }

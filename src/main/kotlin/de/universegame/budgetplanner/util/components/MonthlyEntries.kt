@@ -10,11 +10,11 @@ import java.time.format.DateTimeFormatter
 data class IMonthlyEntries(
     var entries: MutableList<IOneTimeBalanceEntry> = mutableListOf(),
     var month: String = YearMonth.now().format(DateTimeFormatter.ofPattern("MM-yyyy"))
-){
+) {
 
-    fun toUsable():MonthlyEntries{
+    fun toUsable(): MonthlyEntries {
         val usableEntries: MutableList<OneTimeBalanceEntry> = mutableListOf()
-        for(entry in entries){
+        for (entry in entries) {
             usableEntries.add(entry.toUsable())
         }
         return MonthlyEntries(usableEntries, YearMonth.from(DateTimeFormatter.ofPattern("MM-yyyy").parse(month)))
@@ -26,9 +26,9 @@ data class MonthlyEntries(
     var month: YearMonth
 ) {
 
-    fun toSerializable():IMonthlyEntries{
+    fun toSerializable(): IMonthlyEntries {
         val serializableEntries = mutableListOf<IOneTimeBalanceEntry>()
-        for(entry in entries){
+        for (entry in entries) {
             serializableEntries.add(entry.toSerializable())
         }
         return IMonthlyEntries(serializableEntries, month.format(DateTimeFormatter.ofPattern("MM-yyyy")))
@@ -199,6 +199,20 @@ data class MonthlyEntries(
             }
         }
         return total
+    }
+
+    fun addOneTimeEntry(entry: OneTimeBalanceEntry): Boolean {
+        if (entry.date.monthValue != month.monthValue) return false
+        if (!entries.contains(entry))
+            entries.add(entry)
+        return true
+    }
+
+    fun deleteOneTimeEntry(entry: OneTimeBalanceEntry): Boolean {
+        if (entry.date.monthValue != month.monthValue) return false
+        if (!entries.any { it.date == entry.date && it.amount == entry.amount && it.usage == entry.usage && it.containerId == entry.containerId }) return false
+        entries.remove(entry)
+        return true
     }
 }
 

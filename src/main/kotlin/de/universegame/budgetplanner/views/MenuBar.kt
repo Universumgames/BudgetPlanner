@@ -22,5 +22,9 @@ fun MenuBarView(modifier: Modifier = Modifier, settings: Settings, onMenuBarCLic
         MenuBarButton(text = "Import", fontSize = 20.sp, settings = settings, bold = false) {
             onMenuBarCLick(SubWindowType.IMPORT)
         }
+
+        MenuBarButton(text = "Add Wallet", fontSize = 20.sp, settings = settings, bold = false) {
+            onMenuBarCLick(SubWindowType.ADD_WALLET)
+        }
     }
 }
