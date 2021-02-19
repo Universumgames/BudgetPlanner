@@ -4,6 +4,10 @@ import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+
+/**
+ * Data struct for storing a one time entry, not serializable
+ * */
 data class OneTimeBalanceEntry(
     override var amount: Double,
     override var usage: String,
@@ -51,6 +55,9 @@ data class OneTimeBalanceEntry(
 }
 
 @Serializable
+/**
+ * Data struct for storing a one time entry, only for serialization purposes
+ * */
 data class IOneTimeBalanceEntry(
     override var amount: Double = 0.0,
     override var usage: String = "",

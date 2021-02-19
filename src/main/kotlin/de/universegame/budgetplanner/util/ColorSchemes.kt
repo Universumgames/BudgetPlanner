@@ -6,6 +6,9 @@ interface SimpleColorScheme {
     val fontColor: Color
 }
 
+/**
+ * Datastruct for storing colorscheme for thhe balance list
+ * */
 data class BalanceListColors(
     override val fontColor: Color = Color.White,
     val positiveEntryFontColor: Color = Color.Green,
@@ -16,6 +19,10 @@ data class BalanceListColors(
     val recurringEntryBgColor: Color = Color(0xff101010),
 ) : SimpleColorScheme
 
+
+/**
+ * Data struct for storing all color schemes
+ * */
 data class ColorScheme(
     val balanceListColors: BalanceListColors = BalanceListColors(),
     val appBackground: Color = Color(0xff1d1d1d),

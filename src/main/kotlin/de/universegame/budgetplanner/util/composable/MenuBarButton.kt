@@ -30,6 +30,9 @@ import de.universegame.budgetplanner.util.Settings
 }*/
 
 @Composable
+/**
+ * Composable element to be used as a button in thhe menu bar
+ * */
 fun MenuBarButton(
     settings: Settings,
     text: String,

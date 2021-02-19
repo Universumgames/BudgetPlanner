@@ -15,6 +15,9 @@ import java.time.LocalDate
 import java.time.Year
 
 @Composable
+/**
+ * Simple composable element for a user input, simple way to prompt the user to input a date
+ * */
 fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.White, onSubmit: (LocalDate) -> Unit) {
     SimpleFlowRow(modifier.padding(5.dp), horizontalGap = 2.dp, verticalGap = 5.dp) {
         val localDate = LocalDate.now()

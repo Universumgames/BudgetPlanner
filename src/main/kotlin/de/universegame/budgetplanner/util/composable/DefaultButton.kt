@@ -15,6 +15,9 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
+/**
+ * Simple composable for a easy to use default button with text
+ * */
 fun DefaultButton(
     text: String,
     modifier: Modifier = Modifier,

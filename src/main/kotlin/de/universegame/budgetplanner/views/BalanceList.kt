@@ -14,6 +14,10 @@ import de.universegame.budgetplanner.util.composable.ScrollColumn
 import java.time.LocalDate
 
 @Composable
+/**
+ * Contains the YearOverviews
+ * The SummaryList for the total amount of change in income
+ * */
 fun BalanceListView(balanceContainer: BalanceContainer, onMonthSelected: (MonthlyEntries) -> Unit) {
     ScrollColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
         for (entry in balanceContainer.sortedEntries()) {

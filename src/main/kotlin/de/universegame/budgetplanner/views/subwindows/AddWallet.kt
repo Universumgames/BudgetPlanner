@@ -17,6 +17,9 @@ import de.universegame.budgetplanner.util.Settings
 import de.universegame.budgetplanner.util.composable.DefaultButton
 
 @Composable
+/**
+ * Subwindow for adding new money location
+ * */
 fun AddWalletView(
     colorScheme: BalanceListColors = BalanceListColors(),
     settings: Settings = Settings(),

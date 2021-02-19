@@ -10,6 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
+/**
+ * Simple composable element for a vertical scrollable column with a scrollbar
+ * */
 fun ScrollColumn(modifier: Modifier = Modifier, verticalArrangement: Arrangement.Vertical = Arrangement.Top, children: @Composable () -> Unit) {
     Box(modifier = modifier) {
         val scrollState = rememberScrollState(0f)

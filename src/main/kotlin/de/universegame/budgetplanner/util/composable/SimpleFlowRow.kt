@@ -37,6 +37,9 @@ fun TagRow(tags: Collection<String>) {
 }
 
 @Composable
+/**
+ * Simple composable element to autowrap the containing elements
+ * */
 fun SimpleFlowRow(
     modifier: Modifier = Modifier,
     alignment: Alignment.Horizontal = Alignment.Start,

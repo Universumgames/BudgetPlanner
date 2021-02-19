@@ -17,6 +17,10 @@ import de.universegame.budgetplanner.views.subwindows.AddWalletView
 import de.universegame.budgetplanner.views.subwindows.ImportEntriesView
 
 @Composable
+/**
+ * Similar to AppView
+ * Contains all main ui
+ * */
 fun ContentView(
     container: BalanceContainer,
     settings: Settings,
@@ -82,7 +86,7 @@ fun ContentView(
                                         onAddRecurringSubmit(entry)
                                     }
                                 SubWindowType.IMPORT ->
-                                    ImportEntriesView { entries: List<OneTimeBalanceEntry> ->
+                                    ImportEntriesView(container = container) { entries: List<OneTimeBalanceEntry> ->
                                         onImportSubmit(entries)
                                     }
                                 SubWindowType.ADD_WALLET ->

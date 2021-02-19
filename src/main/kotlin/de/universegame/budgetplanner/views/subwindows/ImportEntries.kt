@@ -16,25 +16,30 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
 import de.universegame.budgetplanner.util.Settings
+import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
 import de.universegame.budgetplanner.util.composable.DefaultButton
+import de.universegame.budgetplanner.util.composable.WalletInput
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.io.File
 import java.time.LocalDate
 
-
-
-
 @Composable
+/**
+ * Subwindow to import entries from a file
+ * (special formatted csv file required currently: "CSV-CAMT-Format")
+ * */
 fun ImportEntriesView(
     colorScheme: BalanceListColors = BalanceListColors(),
+    container: BalanceContainer,
     settings: Settings = Settings(),
     onSubmitClick: (List<OneTimeBalanceEntry>) -> Unit
 ) {
     val home = System.getProperty("user.home")
     val filePath = remember { mutableStateOf("$home\\Downloads\\") }
     val info = remember { mutableStateOf("") }
+    val walletData = remember { mutableStateOf(container.walletNames[0]) }
 
     Column(modifier = Modifier.fillMaxSize().padding(5.dp)) {
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
@@ -64,6 +69,9 @@ fun ImportEntriesView(
                 textStyle = TextStyle(colorScheme.fontColor)
             )
         }
+
+        WalletInput(container, walletData)
+
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             DefaultButton("Import") {
                 val file = File(filePath.value)
@@ -87,7 +95,7 @@ fun ImportEntriesView(
                             OneTimeBalanceEntry(
                                 amount = amount,
                                 usage = usage,
-                                containerId = 0,
+                                containerId = walletData.value.id,
                                 name = name,
                                 date = LocalDate.parse(dateString, settings.importDateFormat)
                             )

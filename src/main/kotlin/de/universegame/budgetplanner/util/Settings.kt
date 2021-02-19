@@ -7,6 +7,9 @@ import kotlinx.serialization.json.Json
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+ * Seettings data struct for storing color schemes, json serializer, default storage filename, dateformats, etc.
+ * */
 data class Settings(
     val colorScheme: ColorScheme = ColorScheme(),
     val defaultShape: Shape = RoundedCornerShape(5.dp),

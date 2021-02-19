@@ -11,12 +11,19 @@ import java.time.YearMonth
 import kotlin.random.Random
 
 @Serializable
+/**
+ * Data struct for storing a single location for money
+ * (like "cash", "account", "wallet")
+ * */
 data class WalletData(
     val name: String,
     val id: Int
 )
 
 @Serializable
+/**
+ * Data Storage for all expenses and income, only for serialization purposes
+ * */
 data class IBalanceContainer(
     var walletNames: MutableList<WalletData> = mutableListOf(WalletData("Wallet", 0)),
     var recurringBalanceEntries: MutableList<IRecurringBalanceEntry> = mutableListOf(),
@@ -40,6 +47,9 @@ data class IBalanceContainer(
     }
 }
 
+/**
+ * Data Storage for all expenses and income, not serializable
+ * */
 class BalanceContainer {
     var walletNames: MutableList<WalletData> = mutableListOf(WalletData("Wallet", 0))
     var recurringBalanceEntries: MutableList<RecurringBalanceEntry> = mutableListOf()
@@ -58,6 +68,18 @@ class BalanceContainer {
     }
 
     fun sortedEntries(): MutableMap<Year, YearlyEntries> {
+        val last = entries.keys.last()
+        var until : Year = entries.keys.last()
+        for(rec in recurringBalanceEntries){
+            if(rec.endTime.year > until.value)
+                until = Year.of(rec.endTime.year)
+        }
+        for(i in last.value..until.value){
+            val year = Year.of(i)
+            if(!entries.keys.contains(year)){
+                entries[year] = YearlyEntries(year)
+            }
+        }
         return entries.toSortedMap()
     }
 

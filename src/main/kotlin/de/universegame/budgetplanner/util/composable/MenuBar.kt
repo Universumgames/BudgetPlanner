@@ -8,6 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
+/**
+ * Composable element, children will be in the menu bar
+ * */
 fun MenuBar(modifier: Modifier = Modifier, children: @Composable () -> Unit){
     Box(modifier=modifier.padding(0.dp)){
         Row() {

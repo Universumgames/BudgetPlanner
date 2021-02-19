@@ -17,6 +17,9 @@ data class IYearlyEntries(
     }
 }
 
+/**
+ * Data struct for containing thee onetime entries for a year
+ * */
 data class YearlyEntries(
     val year: Year,
     var months: List<MonthlyEntries> = listOf()

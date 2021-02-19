@@ -8,11 +8,17 @@ import java.time.format.DateTimeFormatter
 import kotlin.math.abs
 
 @Serializable
+/**
+ * Storing onetimeEntries for a specific month, only for serialization purposes
+ * */
 data class IMonthlyEntries(
     var entries: MutableList<IOneTimeBalanceEntry>,
     var yearMonth: String
 ) {
 
+    /**
+     * Converts into a usable (easier) format
+     * */
     fun toUsable(): MonthlyEntries {
         val usableEntries: MutableList<OneTimeBalanceEntry> = mutableListOf()
         for (entry in entries) {
@@ -22,11 +28,18 @@ data class IMonthlyEntries(
     }
 }
 
+/**
+ * Storing onetimeEntries for a specific month, not serializable
+ * */
 data class MonthlyEntries(
     var entries: MutableList<OneTimeBalanceEntry> = mutableListOf(),
     var yearMonth: YearMonth
 ) {
 
+    /**
+     * Converts to Serializable object
+     * @return IMonthlyEntries
+     * */
     fun toSerializable(): IMonthlyEntries {
         val serializableEntries = mutableListOf<IOneTimeBalanceEntry>()
         for (entry in entries) {
@@ -35,6 +48,9 @@ data class MonthlyEntries(
         return IMonthlyEntries(serializableEntries, yearMonth.format(DateTimeFormatter.ofPattern("MM-yyyy")))
     }
 
+    /**
+     * @return Sum of all changes (only OneTimeEntries)
+     * */
     val simpleChange: Double
         get() {
             var totalV: Double = 0.0
@@ -44,6 +60,9 @@ data class MonthlyEntries(
             return totalV
         }
 
+    /**
+     * @return  Simplified list containing all entries (OneTime + Recurring), for displaying in MonthOverview
+     * */
     fun simplifiedList(container: BalanceContainer, sorted: Boolean = true): List<OneTimeBalanceEntry> {
         val clone = copy()
         val clonedEntries = clone.entries.toMutableList()
@@ -176,43 +195,55 @@ data class MonthlyEntries(
         return clonedEntries.sortedBy { it.date }.toList()
     }
 
+    /**
+     * @return Sorted List (by date) of OneTimeBalanceEntries for this month
+     * */
     fun sorted(): List<OneTimeBalanceEntry> {
         return entries.sortedBy { it.date }
     }
 
+    /**
+     * Calculate the change of money for that month, considering recurring entries
+     * */
     fun getChange(timedList: List<RecurringBalanceEntry>): Double {
         var change = simpleChange
         timedList.forEach { entry ->
-            if (entry.startTime.year <= yearMonth.year && entry.startTime.month <= yearMonth.month) {
-                if (entry.endTime.year >= yearMonth.year && entry.endTime.month >= yearMonth.month) {
-                    val value: Double
-                    val amount = entry.amount
-                    val monthsPassed =
-                        (entry.startTime.year - yearMonth.year) * 12 + (12 - abs(entry.startTime.monthValue - yearMonth.monthValue))
-                    var weeksToCalc = 0
-                    for (i in 1..31) {
-                        if (yearMonth.isValidDay(i)) {
-                            val now = yearMonth.atDay(i)
-                            val dayDiff = entry.startTime.dayOfMonth - i
-                            if (dayDiff % 7 == 0 &&
-                                (now.isAfter(entry.startTime) || now.isEqual(entry.startTime)) &&
-                                (now.isBefore(entry.endTime) || now.isEqual(entry.endTime))
-                            ) {
-                                weeksToCalc++
-                            }
+            if ((YearMonth.of(entry.startTime.year, entry.startTime.month).isBefore(yearMonth) &&
+                        YearMonth.of(entry.endTime.year, entry.endTime.month).isAfter(yearMonth)) ||
+                (YearMonth.of(entry.startTime.year, entry.startTime.month) == yearMonth ||
+                        YearMonth.of(entry.endTime.year, entry.endTime.month) == yearMonth)
+            ) {
+                val value: Double
+                val amount = entry.amount
+                val monthsPassed =
+                    //years passed
+                    (entry.startTime.year - yearMonth.year) * 12 +
+                            //absolute delta of passed months
+                            (12 - abs(entry.startTime.monthValue - yearMonth.monthValue))
+                var weeksToCalc = 0
+                for (i in 1..31) {
+                    if (yearMonth.isValidDay(i)) {
+                        val now = yearMonth.atDay(i)
+                        val dayDiff = entry.startTime.dayOfMonth - i
+                        if (dayDiff % 7 == 0 &&
+                            (now.isAfter(entry.startTime) || now.isEqual(entry.startTime)) &&
+                            (now.isBefore(entry.endTime) || now.isEqual(entry.endTime))
+                        ) {
+                            weeksToCalc++
                         }
                     }
-                    value = when (entry.interval) {
-                        Interval.DAILY -> amount * yearMonth.atEndOfMonth().dayOfMonth
-                        Interval.WEEKLY -> amount * weeksToCalc
-                        Interval.TWICE_MONTHLY -> amount * 2
-                        Interval.MONTHLY -> amount
-                        Interval.QUARTERLY -> amount * (if (monthsPassed % 3 == 0) 1 else 0)
-                        Interval.BIANNUAL -> amount * (if (monthsPassed % 6 == 0) 1 else 0)
-                        Interval.ANNUAL -> amount * (if (monthsPassed % 12 == 0) 1 else 0)
-                    }
-                    change += value
                 }
+                value = when (entry.interval) {
+                    Interval.DAILY -> amount * yearMonth.atEndOfMonth().dayOfMonth
+                    Interval.WEEKLY -> amount * weeksToCalc
+                    Interval.TWICE_MONTHLY -> amount * 2
+                    Interval.MONTHLY -> amount
+                    Interval.QUARTERLY -> amount * (if (monthsPassed % 3 == 0) 1 else 0)
+                    Interval.BIANNUAL -> amount * (if (monthsPassed % 6 == 0) 1 else 0)
+                    Interval.ANNUAL -> amount * (if (monthsPassed % 12 == 0) 1 else 0)
+                }
+                change += value
+
             }
         }
         return change
@@ -227,7 +258,12 @@ data class MonthlyEntries(
 
     fun deleteOneTimeEntry(entry: OneTimeBalanceEntry): Boolean {
         if (entry.date.monthValue != yearMonth.monthValue) return false
-        if (!entries.any { it.date == entry.date && it.amount == entry.amount && it.usage == entry.usage && it.containerId == entry.containerId }) return false
+        if (!entries.any {
+                it.date == entry.date &&
+                        it.amount == entry.amount &&
+                        it.usage == entry.usage &&
+                        it.containerId == entry.containerId
+            }) return false
         entries.remove(entry)
         return true
     }

@@ -11,6 +11,9 @@ import de.universegame.budgetplanner.util.composable.MenuBar
 import de.universegame.budgetplanner.util.composable.MenuBarButton
 
 @Composable
+/**
+ * Contains MenuBar elements for selecting subwindows
+ * */
 fun MenuBarView(modifier: Modifier = Modifier, settings: Settings, onMenuBarCLick: (SubWindowType) -> Unit) {
     MenuBar(modifier = modifier.padding(0.dp)) {
         MenuBarButton(text = "+", fontSize = 20.sp, settings = settings) {

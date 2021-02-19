@@ -15,6 +15,9 @@ enum class Interval(val id: Int, val prettyName: String) {
     ANNUAL(6, "Yearly")
 }
 
+/**
+ * Data struct for storing a single recurring entry, not serializable
+ * */
 data class RecurringBalanceEntry(
     override var amount: Double,
     override var usage: String,
@@ -48,6 +51,9 @@ data class RecurringBalanceEntry(
 }
 
 @Serializable
+/**
+ * Data struct for storing a single recurring entry, only for serialization purposes
+ * */
 data class IRecurringBalanceEntry(
     override var amount: Double = 0.0,
     override var usage: String = "",

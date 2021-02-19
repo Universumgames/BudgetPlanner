@@ -18,6 +18,9 @@ import java.time.LocalDate
 
 
 @Composable
+/**
+ * Used in MonthOverview
+ * */
 fun BalanceEntryRow(
     modifier: Modifier = Modifier,
     entry: IBalanceEntry,
@@ -68,6 +71,10 @@ fun BalanceEntryRow(
 }
 
 @Composable
+/**
+ * Used in BalanceList
+ * Displays the total change of money for that year and the remaining money at the end of the year
+ * */
 fun YearOverviewRow(
     modifier: Modifier = Modifier,
     colorScheme: BalanceListColors = BalanceListColors(),
@@ -109,6 +116,10 @@ fun YearOverviewRow(
 }
 
 @Composable
+/**
+ * Used in BalanceList
+ * Displays the total change of money for that month and the remaining money at the end of the month
+ * */
 fun MonthOverviewRow(
     modifier: Modifier = Modifier,
     colorScheme: BalanceListColors = BalanceListColors(),

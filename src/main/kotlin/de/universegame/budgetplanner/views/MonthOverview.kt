@@ -19,6 +19,9 @@ import de.universegame.budgetplanner.util.toCurrencyString
 import de.universegame.budgetplanner.util.toSimpleFullName
 
 @Composable
+/**
+ * Detailed month view, list of all expenses and incomes for given month
+ * */
 fun MonthOverviewView(
     month: MonthlyEntries,
     colorScheme: BalanceListColors = BalanceListColors(),

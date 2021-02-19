@@ -8,6 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
+/**
+ * Basic composable element to contain the desktop application
+ * */
 fun AppContainer(modifier: Modifier = Modifier, appBg: Color, children: @Composable () -> Unit) =
 
     DesktopTheme {

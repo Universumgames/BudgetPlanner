@@ -14,6 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
+/**
+ * Custom composable to create a Radio button
+ * */
 fun CustomRadioButton(
     storage: MutableState<Int>,
     index: Int,
