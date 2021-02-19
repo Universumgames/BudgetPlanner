@@ -56,9 +56,16 @@ fun AppView(mutableContainer: MutableState<BalanceContainer>, settings: Settings
             },
             onEntryDelete = { entry: IBalanceEntry ->
                 if (entry is OneTimeBalanceEntry)
-                    if(mutableContainer.value.deleteOneTimeEntry(entry))
+                    if (mutableContainer.value.deleteOneTimeEntry(entry))
                         println("deleted $entry")
                 tmp.value = !tmp.value
+                saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
+            }, onEntryHandled = { entry: IBalanceEntry ->
+                if (mutableContainer.value.setRecurringEntryHandled(entry as OneTimeBalanceEntry))
+                    println("booked ${entry.toSerializable()}")
+                mutableContainer.value.walletNames.sortBy { it.id }
+                tmp.value = !tmp.value
+
                 saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
             })
         MenuBarView(settings = settings) {

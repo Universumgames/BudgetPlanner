@@ -75,7 +75,6 @@ class BalanceContainer {
                 if (monthEntry.yearMonth.isAfter(yearMonth)) break
                 val change = monthEntry.getChange(recurringBalanceEntries)
                 total += change
-                println("${monthEntry.yearMonth} $change")
             }
         }
         return total
@@ -136,6 +135,27 @@ class BalanceContainer {
 
     fun getWalletDataById(id: Int): WalletData {
         return walletNames.find { it.id == id } ?: WalletData("Deleted / Not found", -1)
+    }
+
+    fun setRecurringEntryHandled(entry: OneTimeBalanceEntry): Boolean {
+        if (entry.type != EntryType.RECURRING) return false
+        val recEntry =
+            recurringBalanceEntries.find { it.amount == entry.amount && it.usage == entry.usage && it.containerId == entry.containerId }
+                ?: return false
+        val rec = recEntry.copy()
+        recurringBalanceEntries.remove(recEntry)
+        rec.startTime = when (rec.interval) {
+            Interval.DAILY -> entry.date.plusDays(1L)
+            Interval.WEEKLY -> entry.date.plusDays(7L)
+            Interval.TWICE_MONTHLY -> entry.date.plusDays(14L)
+            Interval.MONTHLY -> entry.date.plusMonths(1L)
+            Interval.QUARTERLY -> entry.date.plusMonths(3L)
+            Interval.BIANNUAL -> entry.date.plusMonths(6L)
+            Interval.ANNUAL -> entry.date.plusYears(1L)
+        }
+        if (!rec.startTime.isAfter(rec.endTime))
+            recurringBalanceEntries.add(rec)
+        return true
     }
 }
 

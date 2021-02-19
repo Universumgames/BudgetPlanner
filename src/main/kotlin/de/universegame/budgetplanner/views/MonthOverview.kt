@@ -23,7 +23,8 @@ fun MonthOverviewView(
     month: MonthlyEntries,
     colorScheme: BalanceListColors = BalanceListColors(),
     container: BalanceContainer,
-    onEntryDelete: (IBalanceEntry) -> Unit
+    onEntryDelete: (IBalanceEntry) -> Unit,
+    onEntryHandled: (IBalanceEntry) -> Unit
 ) {
     val simpleEntryList = month.simplifiedList(container)
     val selectedEntry: MutableState<OneTimeBalanceEntry?> = remember { mutableStateOf(null) }
@@ -59,6 +60,9 @@ fun MonthOverviewView(
                 viewDeleteButton = selectedEntry.value == entry,
                 onDelete = {
                     onEntryDelete(it)
+                },
+                onHandled = {
+                    onEntryHandled(it)
                 },
                 container = container
             )

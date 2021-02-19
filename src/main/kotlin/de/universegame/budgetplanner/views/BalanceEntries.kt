@@ -26,7 +26,8 @@ fun BalanceEntryRow(
     currency: String,
     viewDeleteButton: Boolean,
     onClick: (IBalanceEntry) -> Unit,
-    onDelete: (IBalanceEntry) -> Unit,
+    onDelete: (OneTimeBalanceEntry) -> Unit,
+    onHandled: (IBalanceEntry) -> Unit,
     colorScheme: BalanceListColors = BalanceListColors()
 ) {
     Surface(color = if (entry.type == EntryType.ONE_TIME) colorScheme.oneTimeEntryBgColor else colorScheme.recurringEntryBgColor) {
@@ -51,9 +52,14 @@ fun BalanceEntryRow(
             }
             if (viewDeleteButton) {
                 Column {
-                    DefaultButton("Delete") {
-                        onDelete(entry)
-                    }
+                    if (entry.type == EntryType.ONE_TIME)
+                        DefaultButton("Delete") {
+                            onDelete(entry as OneTimeBalanceEntry)
+                        }
+                    else if (entry.type == EntryType.RECURRING)
+                        DefaultButton("Booked") {
+                            onHandled(entry)
+                        }
                 }
             }
         }

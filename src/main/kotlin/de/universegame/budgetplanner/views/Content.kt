@@ -27,7 +27,8 @@ fun ContentView(
     onAddRecurringSubmit: (entry: RecurringBalanceEntry) -> Unit,
     onImportSubmit: (entries: List<OneTimeBalanceEntry>) -> Unit,
     onAddWalletSubmit: (name: String) -> Unit,
-    onEntryDelete: (IBalanceEntry)->Unit
+    onEntryDelete: (IBalanceEntry) -> Unit,
+    onEntryHandled: (IBalanceEntry) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -49,9 +50,15 @@ fun ContentView(
             ) {
                 Surface(color = settings.colorScheme.widgetBgColor, shape = RoundedCornerShape(5.dp)) {
                     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
-                        MonthOverviewView(selectedMonth.value, container = container, onEntryDelete = {
-                            onEntryDelete(it)
-                        })
+                        MonthOverviewView(
+                            selectedMonth.value,
+                            container = container,
+                            onEntryDelete = {
+                                onEntryDelete(it)
+                            },
+                            onEntryHandled = {
+                                onEntryHandled(it)
+                            })
                     }
                 }
             }

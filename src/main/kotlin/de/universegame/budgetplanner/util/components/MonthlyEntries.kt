@@ -73,7 +73,10 @@ data class MonthlyEntries(
                             if (yearMonth.isValidDay(i)) {
                                 val now = yearMonth.atDay(i)
                                 val dayDiff = recurring.startTime.dayOfMonth - i
-                                if (dayDiff % 7 == 0) {
+                                if (dayDiff % 7 == 0 &&
+                                    (now.isAfter(recurring.startTime) || now.isEqual(recurring.startTime)) &&
+                                    (now.isBefore(recurring.endTime) || now.isEqual(recurring.endTime))
+                                ) {
                                     clonedEntries.add(
                                         OneTimeBalanceEntry(
                                             recurring.amount,
@@ -189,8 +192,12 @@ data class MonthlyEntries(
                     var weeksToCalc = 0
                     for (i in 1..31) {
                         if (yearMonth.isValidDay(i)) {
+                            val now = yearMonth.atDay(i)
                             val dayDiff = entry.startTime.dayOfMonth - i
-                            if (dayDiff % 7 == 0) {
+                            if (dayDiff % 7 == 0 &&
+                                (now.isAfter(entry.startTime) || now.isEqual(entry.startTime)) &&
+                                (now.isBefore(entry.endTime) || now.isEqual(entry.endTime))
+                            ) {
                                 weeksToCalc++
                             }
                         }
