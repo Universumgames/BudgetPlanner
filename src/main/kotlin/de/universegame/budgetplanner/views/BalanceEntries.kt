@@ -21,6 +21,7 @@ import java.time.LocalDate
 fun BalanceEntryRow(
     modifier: Modifier = Modifier,
     entry: IBalanceEntry,
+    container: BalanceContainer,
     date: LocalDate,
     currency: String,
     viewDeleteButton: Boolean,
@@ -46,7 +47,7 @@ fun BalanceEntryRow(
                 Text(entry.usage.short(20), color = colorScheme.fontColor)
             }
             Column {
-                Text(entry.containerId.toString(), color = colorScheme.fontColor)
+                Text(container.getWalletDataById(entry.containerId).name, color = colorScheme.fontColor)
             }
             if (viewDeleteButton) {
                 Column {
@@ -77,7 +78,7 @@ fun YearOverviewRow(
     ) {
         Row(modifier.fillMaxWidth().clickable { onClick() }, Arrangement.SpaceEvenly) {
             Text(entry.year.value.toString(), color = colorScheme.fontColor)
-            val totalChange = entry.total(timedList)
+            val totalChange = entry.getChange(timedList)
             val total = container.totalTil(entry.year)
             Box {
                 Row {
@@ -113,9 +114,9 @@ fun MonthOverviewRow(
 ) {
     Surface(color = colorScheme.monthOverviewBgColor) {
         Row(modifier.fillMaxWidth().clickable { onClick() }, Arrangement.SpaceEvenly) {
-            Text(entry.month.toSimpleFullName(), color = colorScheme.fontColor)
-            val totalChange = entry.total(timedList)
-            val total = container.totalTil(entry.month)
+            Text(entry.yearMonth.toSimpleFullName(), color = colorScheme.fontColor)
+            val totalChange = entry.getChange(timedList)
+            val total = container.totalTil(entry.yearMonth)
             Text(
                 totalChange.toCurrencyString(currency),
                 color = if (totalChange < 0) colorScheme.negativeEntryFontColor else colorScheme.positiveEntryFontColor

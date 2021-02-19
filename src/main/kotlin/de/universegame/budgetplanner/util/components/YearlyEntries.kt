@@ -34,25 +34,27 @@ data class YearlyEntries(
         if(this.months.isEmpty()) {
             val tmp = mutableListOf<MonthlyEntries>()
             for (i in 1..12) {
-                tmp.add(MonthlyEntries(month = year.atMonth(i)))
+                tmp.add(MonthlyEntries(yearMonth = year.atMonth(i)))
             }
             this.months = tmp.toList()
         }
+        this.months = this.months.sortedBy { it.yearMonth.monthValue }
     }
 
-    val oneTimeTotal: Double
+    @Deprecated("use getChange() to get total change")
+    val simpleChange: Double
         get() {
             var totalV: Double = 0.0
             months.forEach {
-                totalV += it.oneTimeTotal
+                totalV += it.simpleChange
             }
             return totalV
         }
 
-    fun total(timedList: List<RecurringBalanceEntry>): Double {
+    fun getChange(timedList: List<RecurringBalanceEntry>): Double {
         var total = 0.0
         months.forEach { month ->
-            total += month.total(timedList)
+            total += month.getChange(timedList)
         }
         return total
     }

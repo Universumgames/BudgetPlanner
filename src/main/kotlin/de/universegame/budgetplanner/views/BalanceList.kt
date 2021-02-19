@@ -32,7 +32,7 @@ fun BalanceListView(balanceContainer: BalanceContainer, onMonthSelected: (Monthl
 
             if (dropdown.value)
                 for (month in yearEntry.months) {
-                    val total = month.total(balanceContainer.recurringBalanceEntries)
+                    val total = month.getChange(balanceContainer.recurringBalanceEntries)
                     if (total != 0.0) {
                         MonthOverviewRow(
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),

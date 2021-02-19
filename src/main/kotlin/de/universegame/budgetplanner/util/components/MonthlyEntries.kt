@@ -5,11 +5,12 @@ import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import kotlin.math.abs
 
 @Serializable
 data class IMonthlyEntries(
-    var entries: MutableList<IOneTimeBalanceEntry> = mutableListOf(),
-    var month: String = YearMonth.now().format(DateTimeFormatter.ofPattern("MM-yyyy"))
+    var entries: MutableList<IOneTimeBalanceEntry>,
+    var yearMonth: String
 ) {
 
     fun toUsable(): MonthlyEntries {
@@ -17,13 +18,13 @@ data class IMonthlyEntries(
         for (entry in entries) {
             usableEntries.add(entry.toUsable())
         }
-        return MonthlyEntries(usableEntries, YearMonth.from(DateTimeFormatter.ofPattern("MM-yyyy").parse(month)))
+        return MonthlyEntries(usableEntries, YearMonth.from(DateTimeFormatter.ofPattern("MM-yyyy").parse(yearMonth)))
     }
 }
 
 data class MonthlyEntries(
     var entries: MutableList<OneTimeBalanceEntry> = mutableListOf(),
-    var month: YearMonth
+    var yearMonth: YearMonth
 ) {
 
     fun toSerializable(): IMonthlyEntries {
@@ -31,10 +32,10 @@ data class MonthlyEntries(
         for (entry in entries) {
             serializableEntries.add(entry.toSerializable())
         }
-        return IMonthlyEntries(serializableEntries, month.format(DateTimeFormatter.ofPattern("MM-yyyy")))
+        return IMonthlyEntries(serializableEntries, yearMonth.format(DateTimeFormatter.ofPattern("MM-yyyy")))
     }
 
-    val oneTimeTotal: Double
+    val simpleChange: Double
         get() {
             var totalV: Double = 0.0
             entries.forEach {
@@ -47,20 +48,20 @@ data class MonthlyEntries(
         val clone = copy()
         val clonedEntries = clone.entries.toMutableList()
         for (recurring in container.recurringBalanceEntries) {
-            val yearsDiff = recurring.startTime.year - month.year
-            val monthsDiff = recurring.startTime.monthValue - month.monthValue
-            if (YearMonth.from(recurring.startTime) <= month && YearMonth.from(recurring.endTime) >= month) {
+            val yearsDiff = recurring.startTime.year - yearMonth.year
+            val monthsDiff = recurring.startTime.monthValue - yearMonth.monthValue
+            if (YearMonth.from(recurring.startTime) <= yearMonth && YearMonth.from(recurring.endTime) >= yearMonth) {
                 when (recurring.interval) {
                     Interval.DAILY -> {
                         for (i in 1..31) {
-                            if (month.isValidDay(i)) {
+                            if (yearMonth.isValidDay(i)) {
                                 clonedEntries.add(
                                     OneTimeBalanceEntry(
                                         recurring.amount,
                                         recurring.usage,
                                         recurring.containerId,
                                         recurring.name,
-                                        LocalDate.of(month.year, month.monthValue, i),
+                                        LocalDate.of(yearMonth.year, yearMonth.monthValue, i),
                                         EntryType.RECURRING
                                     )
                                 )
@@ -69,8 +70,8 @@ data class MonthlyEntries(
                     }
                     Interval.WEEKLY -> {
                         for (i in 1..31) {
-                            if (month.isValidDay(i)) {
-                                val now = month.atDay(i)
+                            if (yearMonth.isValidDay(i)) {
+                                val now = yearMonth.atDay(i)
                                 val dayDiff = recurring.startTime.dayOfMonth - i
                                 if (dayDiff % 7 == 0) {
                                     clonedEntries.add(
@@ -79,7 +80,7 @@ data class MonthlyEntries(
                                             recurring.usage,
                                             recurring.containerId,
                                             recurring.name,
-                                            LocalDate.of(month.year, month.monthValue, now.dayOfMonth),
+                                            LocalDate.of(yearMonth.year, yearMonth.monthValue, now.dayOfMonth),
                                             EntryType.RECURRING
                                         )
                                     )
@@ -89,8 +90,8 @@ data class MonthlyEntries(
                     }
                     Interval.TWICE_MONTHLY -> {
                         for (i in 1..31) {
-                            if (month.isValidDay(i)) {
-                                val now = month.atDay(i)
+                            if (yearMonth.isValidDay(i)) {
+                                val now = yearMonth.atDay(i)
                                 val dayDiff = recurring.startTime.dayOfMonth - i
                                 if (dayDiff % 7 == 0 && dayDiff % 14 == 0) {
                                     clonedEntries.add(
@@ -99,7 +100,7 @@ data class MonthlyEntries(
                                             recurring.usage,
                                             recurring.containerId,
                                             recurring.name,
-                                            LocalDate.of(month.year, month.monthValue, now.dayOfMonth),
+                                            LocalDate.of(yearMonth.year, yearMonth.monthValue, now.dayOfMonth),
                                             EntryType.RECURRING
                                         )
                                     )
@@ -114,7 +115,7 @@ data class MonthlyEntries(
                                 recurring.usage,
                                 recurring.containerId,
                                 recurring.name,
-                                LocalDate.of(month.year, month.monthValue, recurring.startTime.dayOfMonth),
+                                LocalDate.of(yearMonth.year, yearMonth.monthValue, recurring.startTime.dayOfMonth),
                                 EntryType.RECURRING
                             )
                         )
@@ -127,7 +128,7 @@ data class MonthlyEntries(
                                     recurring.usage,
                                     recurring.containerId,
                                     recurring.name,
-                                    LocalDate.of(month.year, month.monthValue, recurring.startTime.dayOfMonth),
+                                    LocalDate.of(yearMonth.year, yearMonth.monthValue, recurring.startTime.dayOfMonth),
                                     EntryType.RECURRING
                                 )
                             )
@@ -141,7 +142,7 @@ data class MonthlyEntries(
                                     recurring.usage,
                                     recurring.containerId,
                                     recurring.name,
-                                    LocalDate.of(month.year, month.monthValue, recurring.startTime.dayOfMonth),
+                                    LocalDate.of(yearMonth.year, yearMonth.monthValue, recurring.startTime.dayOfMonth),
                                     EntryType.RECURRING
                                 )
                             )
@@ -156,7 +157,7 @@ data class MonthlyEntries(
                                     recurring.containerId,
                                     recurring.name,
                                     LocalDate.of(
-                                        month.year,
+                                        yearMonth.year,
                                         recurring.startTime.monthValue,
                                         recurring.startTime.dayOfMonth
                                     ),
@@ -176,40 +177,49 @@ data class MonthlyEntries(
         return entries.sortedBy { it.date }
     }
 
-    fun total(timedList: List<RecurringBalanceEntry>): Double {
-        var total = oneTimeTotal
+    fun getChange(timedList: List<RecurringBalanceEntry>): Double {
+        var change = simpleChange
         timedList.forEach { entry ->
-            if (entry.startTime.year <= month.year && entry.startTime.month <= month.month) {
-                if (entry.endTime.year >= month.year && entry.endTime.month >= month.month) {
+            if (entry.startTime.year <= yearMonth.year && entry.startTime.month <= yearMonth.month) {
+                if (entry.endTime.year >= yearMonth.year && entry.endTime.month >= yearMonth.month) {
                     val value: Double
                     val amount = entry.amount
                     val monthsPassed =
-                        (entry.startTime.year - month.year) * 12 + (entry.startTime.monthValue - month.monthValue)
-                    value = when (entry.interval) {
-                        Interval.DAILY -> amount * month.atEndOfMonth().dayOfMonth
-                        Interval.WEEKLY -> amount * monthsPassed * 4
-                        Interval.TWICE_MONTHLY -> amount * monthsPassed * 2
-                        Interval.MONTHLY -> amount * monthsPassed
-                        Interval.QUARTERLY -> amount * (if (monthsPassed % 3 == 0) ((monthsPassed - (monthsPassed % 3)) / 3) else 0)
-                        Interval.BIANNUAL -> amount * (if (monthsPassed % 6 == 0) ((monthsPassed - (monthsPassed % 6)) / 6) else 0)
-                        Interval.ANNUAL -> amount * (if (monthsPassed % 12 == 0) ((monthsPassed - (monthsPassed % 12)) / 12) else 0)
+                        (entry.startTime.year - yearMonth.year) * 12 + (12 - abs(entry.startTime.monthValue - yearMonth.monthValue))
+                    var weeksToCalc = 0
+                    for (i in 1..31) {
+                        if (yearMonth.isValidDay(i)) {
+                            val dayDiff = entry.startTime.dayOfMonth - i
+                            if (dayDiff % 7 == 0) {
+                                weeksToCalc++
+                            }
+                        }
                     }
-                    total += value
+                    value = when (entry.interval) {
+                        Interval.DAILY -> amount * yearMonth.atEndOfMonth().dayOfMonth
+                        Interval.WEEKLY -> amount * weeksToCalc
+                        Interval.TWICE_MONTHLY -> amount * 2
+                        Interval.MONTHLY -> amount
+                        Interval.QUARTERLY -> amount * (if (monthsPassed % 3 == 0) 1 else 0)
+                        Interval.BIANNUAL -> amount * (if (monthsPassed % 6 == 0) 1 else 0)
+                        Interval.ANNUAL -> amount * (if (monthsPassed % 12 == 0) 1 else 0)
+                    }
+                    change += value
                 }
             }
         }
-        return total
+        return change
     }
 
     fun addOneTimeEntry(entry: OneTimeBalanceEntry): Boolean {
-        if (entry.date.monthValue != month.monthValue) return false
+        if (entry.date.monthValue != yearMonth.monthValue) return false
         if (!entries.contains(entry))
             entries.add(entry)
         return true
     }
 
     fun deleteOneTimeEntry(entry: OneTimeBalanceEntry): Boolean {
-        if (entry.date.monthValue != month.monthValue) return false
+        if (entry.date.monthValue != yearMonth.monthValue) return false
         if (!entries.any { it.date == entry.date && it.amount == entry.amount && it.usage == entry.usage && it.containerId == entry.containerId }) return false
         entries.remove(entry)
         return true

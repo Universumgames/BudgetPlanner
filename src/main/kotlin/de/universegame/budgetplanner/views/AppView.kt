@@ -60,7 +60,6 @@ fun AppView(mutableContainer: MutableState<BalanceContainer>, settings: Settings
                         println("deleted $entry")
                 tmp.value = !tmp.value
                 saveBalanceContainer(mutableContainer.value, settings.dataFileName, settings.jsonSerializer)
-
             })
         MenuBarView(settings = settings) {
             subWindow.value = it

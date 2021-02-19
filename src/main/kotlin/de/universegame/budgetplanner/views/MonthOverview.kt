@@ -29,11 +29,11 @@ fun MonthOverviewView(
     val selectedEntry: MutableState<OneTimeBalanceEntry?> = remember { mutableStateOf(null) }
     ScrollColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(month.month.toSimpleFullName(), fontSize = 40.sp, color = colorScheme.fontColor)
+            Text(month.yearMonth.toSimpleFullName(), fontSize = 40.sp, color = colorScheme.fontColor)
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            val total = container.totalTil(month.month)
-            val change = month.total(container.recurringBalanceEntries)
+            val total = container.totalTil(month.yearMonth)
+            val change = month.getChange(container.recurringBalanceEntries)
             Text(
                 change.toCurrencyString("€"),
                 fontSize = 30.sp,
@@ -59,7 +59,9 @@ fun MonthOverviewView(
                 viewDeleteButton = selectedEntry.value == entry,
                 onDelete = {
                     onEntryDelete(it)
-                })
+                },
+                container = container
+            )
         }
 
     }

@@ -63,23 +63,19 @@ class BalanceContainer {
 
 
     fun totalTil(year: Year): Double {
-        var total = 0.0
-        val sorted = sortedEntries()
-        for (entry in sorted) {
-            if (entry.key > year) break
-            total += entry.value.total(recurringBalanceEntries)
-        }
-        return total
+        return totalTil(YearMonth.of(year.value, 12))
     }
 
-    fun totalTil(month: YearMonth): Double {
+    fun totalTil(yearMonth: YearMonth): Double {
         var total = 0.0
         val sorted = sortedEntries()
         for (entry in sorted) {
-            if (entry.key.value > month.year) break
+            if (entry.key.value > yearMonth.year) break
             for (monthEntry in entry.value.months) {
-                if (monthEntry.month.monthValue > month.monthValue) break
-                total += monthEntry.total(recurringBalanceEntries)
+                if (monthEntry.yearMonth.isAfter(yearMonth)) break
+                val change = monthEntry.getChange(recurringBalanceEntries)
+                total += change
+                println("${monthEntry.yearMonth} $change")
             }
         }
         return total
@@ -123,12 +119,12 @@ class BalanceContainer {
 
     fun addWallet(name: String): Boolean {
         if (name.isEmpty()) return false
-        if(walletNames.any { it.name == name }) return true
+        if (walletNames.any { it.name == name }) return true
         walletNames.add(WalletData(name, walletNames.size))
         return true
     }
 
-    fun deleteOneTimeEntry(entry: OneTimeBalanceEntry): Boolean{
+    fun deleteOneTimeEntry(entry: OneTimeBalanceEntry): Boolean {
         val year = Year.of(entry.date.year)
         var yearEntries: YearlyEntries = YearlyEntries(year)
         if (entries.containsKey(year)) {
@@ -136,6 +132,10 @@ class BalanceContainer {
         } else
             entries[year] = yearEntries
         return yearEntries.deleteOneTimeEntry(entry)
+    }
+
+    fun getWalletDataById(id: Int): WalletData {
+        return walletNames.find { it.id == id } ?: WalletData("Deleted / Not found", -1)
     }
 }
 

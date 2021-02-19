@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
+import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.Interval
 import de.universegame.budgetplanner.util.components.RecurringBalanceEntry
 import de.universegame.budgetplanner.util.composable.*
@@ -22,6 +23,7 @@ import java.time.LocalDate
 @Composable
 fun AddRecurringEntryView(
     colorScheme: BalanceListColors = BalanceListColors(),
+    container: BalanceContainer,
     onSubmitClick: (RecurringBalanceEntry) -> Unit
 ) {
     ScrollColumn(Modifier.fillMaxSize().padding(5.dp)) {
@@ -35,6 +37,8 @@ fun AddRecurringEntryView(
         val date2Set = remember { mutableStateOf(false) }
         val usage = remember { mutableStateOf("") }
         val name = remember { mutableStateOf("") }
+        val walletIDString = remember { mutableStateOf("0") }
+        val walletData = remember { mutableStateOf(container.walletNames[0]) }
 
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             TextField(
@@ -62,20 +66,48 @@ fun AddRecurringEntryView(
                 entry.value.name = name.value
                 entry.value.startTime = date1Input.value
                 entry.value.endTime = date2Input.value
+                entry.value.interval = Interval.values()[selectedInterval.value]
+                entry.value.containerId = walletIDString.value.toInt()
                 onSubmitClick(entry.value)
             }, text = "Submit")
         }
 
+        Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row {
+
+                Text("Wallet ID", color = Color.White)
+
+                TextField(
+                    walletIDString.value,
+                    onValueChange = {
+                        walletIDString.value = it
+                        if(it.isNotEmpty()){
+                            try{
+                                walletData.value = container.getWalletDataById(walletIDString.value.toInt())
+                            }catch(e: Exception){}
+                        }
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    shape = RoundedCornerShape(5.dp),
+                    activeColor = Color.White,
+                    textStyle = TextStyle(colorScheme.fontColor)
+                )
+
+                Text(walletData.value.name, color = Color.White)
+            }
+        }
+
         SimpleFlowRow(modifier = Modifier.fillMaxWidth(), horizontalGap = 2.dp, verticalGap = 5.dp) {
-            Row(modifier=Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+            //Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
                 for (i in Interval.values()) {
                     CustomRadioButton(selectedInterval, i.id, i.prettyName, colorScheme.fontColor)
                     Spacer(Modifier.width(2.dp))
                 }
-            }
+            //}
         }
         Spacer(Modifier.size(3.dp))
-        Row(modifier=Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+        Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             Row {
                 Text("Usage", color = Color.White)
 
@@ -93,7 +125,7 @@ fun AddRecurringEntryView(
             }
         }
         Spacer(Modifier.size(3.dp))
-        Row(modifier=Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+        Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             Row {
                 Text("Name", color = Color.White)
 

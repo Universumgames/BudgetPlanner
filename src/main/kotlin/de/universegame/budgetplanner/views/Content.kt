@@ -67,11 +67,11 @@ fun ContentView(
                         ) {
                             when (subWindow) {
                                 SubWindowType.ADD_ONETIME_ENTRY ->
-                                    AddOneTimeEntryView { entry: OneTimeBalanceEntry ->
+                                    AddOneTimeEntryView(container = container) { entry: OneTimeBalanceEntry ->
                                         onAddOneTimeSubmit(entry)
                                     }
                                 SubWindowType.ADD_RECURRING_ENTRY ->
-                                    AddRecurringEntryView { entry: RecurringBalanceEntry ->
+                                    AddRecurringEntryView(container = container) { entry: RecurringBalanceEntry ->
                                         onAddRecurringSubmit(entry)
                                     }
                                 SubWindowType.IMPORT ->

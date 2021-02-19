@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import de.universegame.budgetplanner.util.BalanceListColors
+import de.universegame.budgetplanner.util.components.BalanceContainer
 import de.universegame.budgetplanner.util.components.OneTimeBalanceEntry
 import de.universegame.budgetplanner.util.composable.DefaultButton
 import de.universegame.budgetplanner.util.composable.ScrollColumn
@@ -23,6 +24,7 @@ import java.time.LocalDate
 @Composable
 fun AddOneTimeEntryView(
     colorScheme: BalanceListColors = BalanceListColors(),
+    container: BalanceContainer,
     onSubmitClick: (OneTimeBalanceEntry) -> Unit
 ) {
     ScrollColumn(Modifier.fillMaxSize().padding(5.dp)) {
@@ -33,6 +35,8 @@ fun AddOneTimeEntryView(
         val dateSet = remember { mutableStateOf(false) }
         val usage = remember { mutableStateOf("") }
         val name = remember { mutableStateOf("") }
+        val walletIDString = remember { mutableStateOf("0") }
+        val walletData = remember { mutableStateOf(container.walletNames[0]) }
 
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             TextField(
@@ -59,9 +63,38 @@ fun AddOneTimeEntryView(
                 entry.value.usage = usage.value
                 entry.value.name = name.value
                 entry.value.date = dateInput.value
+                try{
+                entry.value.containerId = walletIDString.value.toInt()
+                }catch(e: Exception){}
                 if (amount > 0)
                     onSubmitClick(entry.value)
             }, text = "Submit")
+        }
+
+        Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row {
+
+                Text("Wallet ID", color = Color.White)
+
+                TextField(
+                    walletIDString.value,
+                    onValueChange = {
+                        walletIDString.value = it
+                        if(it.isNotEmpty()){
+                            try{
+                                walletData.value = container.getWalletDataById(walletIDString.value.toInt())
+                            }catch(e: Exception){}
+                        }
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    shape = RoundedCornerShape(5.dp),
+                    activeColor = Color.White,
+                    textStyle = TextStyle(colorScheme.fontColor)
+                )
+
+                Text(walletData.value.name, color = Color.White)
+            }
         }
 
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
