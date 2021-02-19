@@ -3,9 +3,10 @@ import androidx.compose.desktop.Window
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.IntSize
-import de.universegame.budgetplanner.views.AppView
 import de.universegame.budgetplanner.util.Settings
+import de.universegame.budgetplanner.util.components.createBackup
 import de.universegame.budgetplanner.util.components.loadBalanceContainer
+import de.universegame.budgetplanner.views.AppView
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
@@ -18,6 +19,7 @@ fun main() = Window(
 {
     val settings: Settings = Settings()
     val balanceContainer = remember { mutableStateOf(loadBalanceContainer(settings.dataFileName, settings.jsonSerializer)) }
+    createBackup(balanceContainer.value, settings)
     AppView(balanceContainer, settings)
 }
 

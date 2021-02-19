@@ -16,17 +16,17 @@ import de.universegame.budgetplanner.util.composable.MenuBarButton
  * */
 fun MenuBarView(modifier: Modifier = Modifier, settings: Settings, onMenuBarCLick: (SubWindowType) -> Unit) {
     MenuBar(modifier = modifier.padding(0.dp)) {
-        MenuBarButton(text = "+", fontSize = 20.sp, settings = settings) {
+        MenuBarButton(text = "Single", fontSize = 15.sp, settings = settings, bold = false) {
             onMenuBarCLick(SubWindowType.ADD_ONETIME_ENTRY)
         }
-        MenuBarButton(text = "++", fontSize = 20.sp, settings = settings) {
+        MenuBarButton(text = "Recurring", fontSize = 15.sp, settings = settings, bold = false) {
             onMenuBarCLick(SubWindowType.ADD_RECURRING_ENTRY)
         }
-        MenuBarButton(text = "Import", fontSize = 20.sp, settings = settings, bold = false) {
+        MenuBarButton(text = "Import", fontSize = 15.sp, settings = settings, bold = false) {
             onMenuBarCLick(SubWindowType.IMPORT)
         }
 
-        MenuBarButton(text = "Add Wallet", fontSize = 20.sp, settings = settings, bold = false) {
+        MenuBarButton(text = "Add Wallet", fontSize = 15.sp, settings = settings, bold = false) {
             onMenuBarCLick(SubWindowType.ADD_WALLET)
         }
     }

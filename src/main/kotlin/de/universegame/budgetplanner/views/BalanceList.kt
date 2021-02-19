@@ -1,8 +1,6 @@
 package de.universegame.budgetplanner.views
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +18,7 @@ import java.time.LocalDate
  * */
 fun BalanceListView(balanceContainer: BalanceContainer, onMonthSelected: (MonthlyEntries) -> Unit) {
     ScrollColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+        Spacer(Modifier.height(40.dp))
         for (entry in balanceContainer.sortedEntries()) {
             val year = entry.key
             val yearEntry = entry.value

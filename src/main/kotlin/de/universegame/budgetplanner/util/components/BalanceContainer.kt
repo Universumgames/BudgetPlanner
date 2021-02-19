@@ -1,13 +1,12 @@
 package de.universegame.budgetplanner.util.components
 
+import de.universegame.budgetplanner.util.Settings
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.time.LocalDate
-import java.time.Year
-import java.time.YearMonth
+import java.time.*
 import kotlin.random.Random
 
 @Serializable
@@ -237,4 +236,8 @@ fun saveBalanceContainer(container: BalanceContainer, filename: String, json: Js
     file.createNewFile()
     val data: String = json.encodeToString(container.toSerializable())
     file.writeText(data)
+}
+
+fun createBackup(container: BalanceContainer, settings: Settings = Settings()){
+    saveBalanceContainer(container, "./backups/backup-" + LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() + ".json", settings.jsonSerializer)
 }
