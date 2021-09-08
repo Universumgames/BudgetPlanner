@@ -32,7 +32,7 @@ fun WalletInput(container: BalanceContainer, walletData: MutableState<WalletData
 
             TextField(
                 walletIDString.value,
-                onValueChange = {
+                onValueChange = {it: String ->
                     walletIDString.value = it
                     if(it.isNotEmpty()){
                         try{
@@ -43,7 +43,6 @@ fun WalletInput(container: BalanceContainer, walletData: MutableState<WalletData
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(0.4f),
                 shape = RoundedCornerShape(5.dp),
-                activeColor = Color.White,
                 textStyle = TextStyle(colorScheme.fontColor)
             )
 

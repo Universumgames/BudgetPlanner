@@ -32,13 +32,12 @@ fun AddWalletView(
 
             TextField(
                 name.value,
-                onValueChange = {
+                onValueChange = {it: String ->
                     name.value = it
                 },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(0.4f),
                 shape = RoundedCornerShape(5.dp),
-                activeColor = Color.White,
                 textStyle = TextStyle(colorScheme.fontColor)
             )
         }

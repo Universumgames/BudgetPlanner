@@ -42,13 +42,12 @@ fun AddOneTimeEntryView(
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             TextField(
                 amountInput.value.toString(),
-                onValueChange = {
+                onValueChange = { it: String ->
                     amountInput.value = it
                 },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(0.4f),
                 shape = RoundedCornerShape(5.dp),
-                activeColor = Color.White,
                 textStyle = TextStyle(colorScheme.fontColor)
             )
             DefaultButton(onClick = {
@@ -81,13 +80,12 @@ fun AddOneTimeEntryView(
 
                 TextField(
                     usage.value,
-                    onValueChange = {
+                    onValueChange = { it: String ->
                         usage.value = it
                     },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.4f),
                     shape = RoundedCornerShape(5.dp),
-                    activeColor = Color.White,
                     textStyle = TextStyle(colorScheme.fontColor)
                 )
             }
@@ -99,13 +97,12 @@ fun AddOneTimeEntryView(
 
                 TextField(
                     name.value,
-                    onValueChange = {
+                    onValueChange = { it: String ->
                         name.value = it
                     },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.4f),
                     shape = RoundedCornerShape(5.dp),
-                    activeColor = Color.White,
                     textStyle = TextStyle(colorScheme.fontColor)
                 )
             }

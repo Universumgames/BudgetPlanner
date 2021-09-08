@@ -68,14 +68,14 @@ class BalanceContainer {
 
     fun sortedEntries(): MutableMap<Year, YearlyEntries> {
         val last = entries.keys.last()
-        var until : Year = entries.keys.last()
-        for(rec in recurringBalanceEntries){
-            if(rec.endTime.year > until.value)
+        var until: Year = entries.keys.last()
+        for (rec in recurringBalanceEntries) {
+            if (rec.endTime.year > until.value)
                 until = Year.of(rec.endTime.year)
         }
-        for(i in last.value..until.value){
+        for (i in last.value..until.value) {
             val year = Year.of(i)
-            if(!entries.keys.contains(year)){
+            if (!entries.keys.contains(year)) {
                 entries[year] = YearlyEntries(year)
             }
         }
@@ -238,6 +238,10 @@ fun saveBalanceContainer(container: BalanceContainer, filename: String, json: Js
     file.writeText(data)
 }
 
-fun createBackup(container: BalanceContainer, settings: Settings = Settings()){
-    saveBalanceContainer(container, "./backups/backup-" + LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() + ".json", settings.jsonSerializer)
+fun createBackup(container: BalanceContainer, settings: Settings = Settings()) {
+    saveBalanceContainer(
+        container,
+        "./backups/backup-" + LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() + ".json",
+        settings.jsonSerializer
+    )
 }

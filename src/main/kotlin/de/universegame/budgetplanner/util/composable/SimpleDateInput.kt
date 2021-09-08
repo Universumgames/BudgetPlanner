@@ -19,7 +19,7 @@ import java.time.Year
  * Simple composable element for a user input, simple way to prompt the user to input a date
  * */
 fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.White, onSubmit: (LocalDate) -> Unit) {
-    SimpleFlowRow(modifier.padding(5.dp), horizontalGap = 2.dp, verticalGap = 5.dp) {
+    SimpleFlowRow(modifier.padding(5.dp), horizontalGap = 2, verticalGap = 5) {
         val localDate = LocalDate.now()
         val day = remember { mutableStateOf(localDate.dayOfMonth.toString()) }
         val month = remember { mutableStateOf(localDate.monthValue.toString()) }
@@ -28,7 +28,7 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
         Spacer(Modifier.size(3.dp))
         TextField(
             day.value,
-            onValueChange = {
+            onValueChange = {it: String ->
                 val t = it.replace(" ", "")
                 if (t.isNotEmpty()) {
                     val cut = t.substring(0, if (t.length < 2) t.length else 2)
@@ -44,7 +44,6 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
             singleLine = true,
             shape = RoundedCornerShape(5.dp),
             modifier = Modifier.height(50.dp).width(80.dp),
-            activeColor = Color.White,
             textStyle = TextStyle(fontColor)
         )
         Spacer(Modifier.size(3.dp))
@@ -53,7 +52,7 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
         Spacer(Modifier.size(3.dp))
         TextField(
             month.value,
-            onValueChange = {
+            onValueChange = {it: String ->
                 val t = it.replace(" ", "")
                 if (t.isNotEmpty()) {
                     val cut = t.substring(0, if (t.length < 2) t.length else 2)
@@ -69,7 +68,6 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
             singleLine = true,
             shape = RoundedCornerShape(5.dp),
             modifier = Modifier.height(50.dp).width(80.dp),
-            activeColor = Color.White,
             textStyle = TextStyle(fontColor)
         )
         Spacer(Modifier.size(3.dp))
@@ -78,7 +76,7 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
         Spacer(Modifier.size(3.dp))
         TextField(
             year.value,
-            onValueChange = {
+            onValueChange = { it: String ->
                 val t = it.replace(" ", "")
                 if (t.isNotEmpty() && t.length > 3) {
                     val cut = t.substring(0, if (t.length < 4) t.length else 4)
@@ -94,7 +92,6 @@ fun SimpleDateInput(modifier: Modifier = Modifier, fontColor: Color = Color.Whit
             singleLine = true,
             shape = RoundedCornerShape(5.dp),
             modifier = Modifier.height(50.dp).width(80.dp),
-            activeColor = Color.White,
             textStyle = TextStyle(fontColor)
         )
         DefaultButton(onClick = {

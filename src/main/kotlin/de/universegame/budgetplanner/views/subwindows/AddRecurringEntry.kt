@@ -43,13 +43,12 @@ fun AddRecurringEntryView(
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             TextField(
                 amountInput.value,
-                onValueChange = {
+                onValueChange = { it: String ->
                     amountInput.value = it
                 },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(0.4f),
                 shape = RoundedCornerShape(5.dp),
-                activeColor = Color.White,
                 textStyle = TextStyle(colorScheme.fontColor)
             )
             DefaultButton(onClick = {
@@ -74,7 +73,7 @@ fun AddRecurringEntryView(
 
         WalletInput(container, walletData)
 
-        SimpleFlowRow(modifier = Modifier.fillMaxWidth(), horizontalGap = 2.dp, verticalGap = 5.dp) {
+        SimpleFlowRow(modifier = Modifier.fillMaxWidth(), horizontalGap = 2, verticalGap = 5) {
             //Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
                 for (i in Interval.values()) {
                     CustomRadioButton(selectedInterval, i.id, i.prettyName, colorScheme.fontColor)
@@ -89,13 +88,12 @@ fun AddRecurringEntryView(
 
                 TextField(
                     usage.value,
-                    onValueChange = {
+                    onValueChange = {it: String ->
                         usage.value = it
                     },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.4f),
                     shape = RoundedCornerShape(5.dp),
-                    activeColor = Color.White,
                     textStyle = TextStyle(colorScheme.fontColor)
                 )
             }
@@ -107,13 +105,12 @@ fun AddRecurringEntryView(
 
                 TextField(
                     name.value,
-                    onValueChange = {
+                    onValueChange = { it: String ->
                         name.value = it
                     },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.4f),
                     shape = RoundedCornerShape(5.dp),
-                    activeColor = Color.White,
                     textStyle = TextStyle(colorScheme.fontColor)
                 )
             }

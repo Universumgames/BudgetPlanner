@@ -50,7 +50,7 @@ fun ImportEntriesView(
 
             TextField(
                 filePath.value,
-                onValueChange = {
+                onValueChange = {it: String ->
                     filePath.value = it
                 },
                 singleLine = true,
@@ -65,7 +65,6 @@ fun ImportEntriesView(
                     }
                 },
                 shape = RoundedCornerShape(5.dp),
-                activeColor = Color.White,
                 textStyle = TextStyle(colorScheme.fontColor)
             )
         }

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
  * */
 fun ScrollColumn(modifier: Modifier = Modifier, verticalArrangement: Arrangement.Vertical = Arrangement.Top, children: @Composable () -> Unit) {
     Box(modifier = modifier) {
-        val scrollState = rememberScrollState(0f)
+        val scrollState = rememberScrollState(0)
         Column(
             modifier = modifier.fillMaxSize().verticalScroll(scrollState),
             verticalArrangement = verticalArrangement

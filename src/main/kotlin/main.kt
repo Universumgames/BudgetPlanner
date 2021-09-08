@@ -1,4 +1,3 @@
-
 import androidx.compose.desktop.Window
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,7 +17,8 @@ fun main() = Window(
 )
 {
     val settings: Settings = Settings()
-    val balanceContainer = remember { mutableStateOf(loadBalanceContainer(settings.dataFileName, settings.jsonSerializer)) }
+    val balanceContainer =
+        remember { mutableStateOf(loadBalanceContainer(settings.dataFileName, settings.jsonSerializer)) }
     createBackup(balanceContainer.value, settings)
     AppView(balanceContainer, settings)
 }

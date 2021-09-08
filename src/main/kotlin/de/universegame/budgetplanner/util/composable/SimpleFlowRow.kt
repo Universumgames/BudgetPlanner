@@ -11,15 +11,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlin.math.max
+import java.lang.Integer.max
 
 @Composable
 fun TagRow(tags: Collection<String>) {
     SimpleFlowRow(
-        verticalGap = 8.dp,
-        horizontalGap = 8.dp,
+        verticalGap = 8,
+        horizontalGap = 8,
         alignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(16.dp)
     ) {
@@ -43,12 +42,12 @@ fun TagRow(tags: Collection<String>) {
 fun SimpleFlowRow(
     modifier: Modifier = Modifier,
     alignment: Alignment.Horizontal = Alignment.Start,
-    verticalGap: Dp = 0.dp,
-    horizontalGap: Dp = 0.dp,
+    verticalGap: Int = 0,
+    horizontalGap: Int = 0,
     content: @Composable () -> Unit
 ) = Layout(content, modifier) { measurables, constraints ->
-    val hGapPx = horizontalGap.toIntPx()
-    val vGapPx = verticalGap.toIntPx()
+    val hGapPx = horizontalGap
+    val vGapPx = verticalGap
 
     val rows = mutableListOf<MeasuredRow>()
     val itemConstraints = constraints.copy(minWidth = 0)
